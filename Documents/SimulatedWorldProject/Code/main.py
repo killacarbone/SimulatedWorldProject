@@ -14,17 +14,15 @@ def main():
     world = World()
     print(world)
 
-    # Define emotions
-    emotions = ["Love", "Hate", "Neutrality"]
+    # Define gods with their emotions and values
+    god_love = Entity("God of Love", "Love", ["kindness", "compassion", "unity"])
+    god_hate = Entity("God of Hate", "Hate", ["conflict", "division", "anger"])
+    god_wisdom = Entity("God of Wisdom", "Wisdom", ["balance", "knowledge", "reason"])
 
-    # Add gods (entities) to the world with emotions
-    god_love = Entity("God of Love", emotions[0])
-    god_hate = Entity("God of Hate", emotions[1])
-    god_neutrality = Entity("God of Neutrality", emotions[2])
-
+    # Add gods (entities) to the world
     world.add_entity(god_love)
     world.add_entity(god_hate)
-    world.add_entity(god_neutrality)
+    world.add_entity(god_wisdom)
 
     print(world)
 
@@ -34,22 +32,22 @@ def main():
     # Perform actions with the gods
     god_love.perform_action()
     god_hate.perform_action()
-    god_neutrality.perform_action()
+    god_wisdom.perform_action()
 
-    # Propose a change to the world
-    proposal = "Introduce an act of love"
-    world.propose_change(proposal)
+    # Propose changes to the world
+    proposals = [
+        "Introduce an act of kindness",
+        "Introduce an act of conflict",
+        "Introduce a balanced approach"
+    ]
 
-    proposal = "Introduce an act of hate"
-    world.propose_change(proposal)
+    for proposal in proposals:
+        world.propose_change(proposal)
 
-    proposal = "Introduce a neutral act"
-    world.propose_change(proposal)
-
-    # Print the gods' emotions
+    # Print the gods' emotions and values
     print(god_love)
     print(god_hate)
-    print(god_neutrality)
+    print(god_wisdom)
 
 if __name__ == "__main__":
     main()

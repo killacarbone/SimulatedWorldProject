@@ -21,9 +21,10 @@ class World:
 
 
 class Entity:
-    def __init__(self, name, emotion):
+    def __init__(self, name, emotion, values):
         self.name = name
         self.emotion = emotion
+        self.values = values
 
     def update(self):
         print(f"{self.name} is being updated with emotion: {self.emotion}")
@@ -32,14 +33,10 @@ class Entity:
         print(f"{self.name} performs an action influenced by {self.emotion}")
 
     def vote(self, proposal):
-        if self.emotion == "Neutrality":
-            return True  # Neutrality god always votes to pass proposals
-        elif self.emotion == "Love" and "love" in proposal:
-            return True
-        elif self.emotion == "Hate" and "hate" in proposal:
-            return True
-        else:
-            return False
+        for value in self.values:
+            if value in proposal:
+                return True
+        return False
 
     def __str__(self):
-        return f"Entity(name={self.name}, emotion={self.emotion})"
+        return f"Entity(name={self.name}, emotion={self.emotion}, values={self.values})"
