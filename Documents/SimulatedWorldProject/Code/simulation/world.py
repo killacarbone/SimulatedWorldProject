@@ -14,15 +14,15 @@ class World:
 
 
 class Entity:
-    def __init__(self, name, emotions=None):
+    def __init__(self, name, primary_emotion):
         self.name = name
-        self.emotions = emotions if emotions else {}
+        self.primary_emotion = primary_emotion
 
     def update(self):
-        print(f"{self.name} is being updated")
+        print(f"{self.name} is being updated with primary emotion: {self.primary_emotion}")
 
     def perform_action(self):
-        print(f"{self.name} performs an action")
+        print(f"{self.name} performs an action influenced by {self.primary_emotion}")
 
     def __str__(self):
-        return f"Entity(name={self.name}, emotions={self.emotions})"
+        return f"Entity(name={self.name}, primary_emotion={self.primary_emotion})"

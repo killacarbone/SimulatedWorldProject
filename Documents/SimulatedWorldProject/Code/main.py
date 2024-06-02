@@ -14,29 +14,32 @@ def main():
     world = World()
     print(world)
 
-    # Define core emotions
-    core_emotions = {
-        "happiness": 0,
-        "sadness": 0,
-        "anger": 0,
-        "fear": 0,
-        "disgust": 0,
-        "surprise": 0,
-    }
+    # Define primary emotions
+    emotions = ["Love", "Hate", "Neutrality"]
 
-    # Add an entity to the world with emotions
-    entity = Entity("Entity1", core_emotions)
-    world.add_entity(entity)
+    # Add gods (entities) to the world with primary emotions
+    god_love = Entity("God of Love", emotions[0])
+    god_hate = Entity("God of Hate", emotions[1])
+    god_neutrality = Entity("God of Neutrality", emotions[2])
+
+    world.add_entity(god_love)
+    world.add_entity(god_hate)
+    world.add_entity(god_neutrality)
+
     print(world)
 
     # Update the world
     world.update()
 
-    # Perform action with the entity
-    entity.perform_action()
+    # Perform actions with the gods
+    god_love.perform_action()
+    god_hate.perform_action()
+    god_neutrality.perform_action()
 
-    # Print the entity's emotions
-    print(entity)
+    # Print the gods' primary emotions
+    print(god_love)
+    print(god_hate)
+    print(god_neutrality)
 
 if __name__ == "__main__":
     main()
