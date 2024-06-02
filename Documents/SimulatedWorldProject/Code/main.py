@@ -1,4 +1,5 @@
 import numpy as np
+from simulation.world import World
 
 def main():
     # Create a simple NumPy array
@@ -8,6 +9,10 @@ def main():
     # Perform a simple operation
     sum_of_elements = np.sum(array)
     print("Sum of elements:", sum_of_elements)
+
+    # Create a World instance
+    world = World()
+    print(world)
 
 if __name__ == "__main__":
     main()
