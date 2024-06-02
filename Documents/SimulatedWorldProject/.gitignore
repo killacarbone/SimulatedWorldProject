@@ -30,3 +30,6 @@
 # The virtual environment directory is used to manage project-specific dependencies.
 # It is excluded from version control to avoid unnecessary files being tracked.
 venv/
+
+# Ignore __pycache__ directories
+__pycache__/
