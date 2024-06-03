@@ -1,3 +1,5 @@
+import logging
+
 class Physics:
     def apply_gravity(self, elements):
         for element in elements:
