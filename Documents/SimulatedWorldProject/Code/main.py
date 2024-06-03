@@ -1,27 +1,29 @@
-from simulation.world import World
+# main.py
 from simulation.element import Element
+from simulation.world import World
 
 def main():
-    # Create a world instance
+    # Create some elements
+    hydrogen = Element("Hydrogen", "H", 1, "high", "low")
+    oxygen = Element("Oxygen", "O", 8, "moderate", "high")
+    carbon = Element("Carbon", "C", 6, "high", "high")
+    nitrogen = Element("Nitrogen", "N", 7, "moderate", "high")
+    sulfur = Element("Sulfur", "S", 16, "moderate", "high")
+    
+    # Initialize the world
     world = World()
-
-    # Define elements
-    hydrogen = Element(name="Hydrogen", symbol="H", atomic_number=1, reactivity="high", stability="low")
-    oxygen = Element(name="Oxygen", symbol="O", atomic_number=8, reactivity="moderate", stability="high")
-    carbon = Element(name="Carbon", symbol="C", atomic_number=6, reactivity="low", stability="high")
-
+    
     # Add elements to the world
     world.add_element(hydrogen)
     world.add_element(oxygen)
     world.add_element(carbon)
-
-    # Run the simulation to combine elements
-    combined_elements = world.combine_elements()
-    print("Combined elements:")
-    for compound in combined_elements:
-        print(compound)
-
-    # Display the state of the world
+    world.add_element(nitrogen)
+    world.add_element(sulfur)
+    
+    # Combine elements to form compounds
+    world.combine_elements()
+    
+    # Print the world state
     print(world)
 
 if __name__ == "__main__":
