@@ -11,7 +11,6 @@ class World:
         self.elements.append(element)
 
     def form_compounds(self):
-        # Add logic to form new compounds based on elements present
         possible_combinations = [
             ("H", "O"), ("C", "O"), ("N", "H"), ("C", "H"), ("S", "O"),
             ("H", "N"), ("H", "C"), ("O", "C"), ("N", "O")
@@ -19,15 +18,18 @@ class World:
         for combo in possible_combinations:
             elements_in_combo = [e.symbol for e in self.elements]
             if all(e in elements_in_combo for e in combo):
-                compound_name = f"{combo[0]}{combo[1]}"
-                if compound_name not in self.compounds:
-                    self.compounds.append(compound_name)
-                    self.recent_events.append(f"{compound_name} compound formed")
-                else:
-                    self.recent_events.append("No reaction")
+                # Check reactivity conditions
+                e1 = next(e for e in self.elements if e.symbol == combo[0])
+                e2 = next(e for e in self.elements if e.symbol == combo[1])
+                if (e1.reactivity == "high" or e1.reactivity == "very high") and (e2.reactivity == "high" or e2.reactivity == "very high"):
+                    compound_name = f"{combo[0]}{combo[1]}"
+                    if compound_name not in self.compounds:
+                        self.compounds.append(compound_name)
+                        self.recent_events.append(f"{compound_name} compound formed")
+                    else:
+                        self.recent_events.append("No reaction")
 
     def trigger_random_event(self):
-        # Randomly select an element and modify its properties
         if self.elements:
             element = random.choice(self.elements)
             event_type = random.choice(["reactivity", "stability"])
