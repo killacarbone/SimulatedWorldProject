@@ -1,42 +1,39 @@
+from simulation.element import Element
+
+class Compound:
+    def __init__(self, name, components):
+        self.name = name
+        self.components = components
+
+    def __str__(self):
+        component_names = ' + '.join([component.name for component in self.components])
+        return f"{self.name} composed of {component_names}"
+
 class World:
     def __init__(self):
-        self.entities = []
+        self.elements = []
+        self.compounds = []
+        self.rules = {
+            ("Hydrogen", "Oxygen"): "Water",
+            ("Carbon", "Oxygen"): "Carbon Dioxide",
+            # Add more rules as needed
+        }
 
-    def add_entity(self, entity):
-        self.entities.append(entity)
+    def add_element(self, element):
+        self.elements.append(element)
 
-    def update(self):
-        for entity in self.entities:
-            entity.update()
-
-    def propose_change(self, proposal):
-        votes = [entity.vote(proposal) for entity in self.entities]
-        if votes.count(True) > votes.count(False):
-            print(f"Proposal '{proposal}' approved by the council of gods.")
-        else:
-            print(f"Proposal '{proposal}' rejected by the council of gods.")
-
-    def __str__(self):
-        return f"World with {len(self.entities)} entities"
-
-
-class Entity:
-    def __init__(self, name, emotion, values):
-        self.name = name
-        self.emotion = emotion
-        self.values = values
-
-    def update(self):
-        print(f"{self.name} is being updated with emotion: {self.emotion}")
-
-    def perform_action(self):
-        print(f"{self.name} performs an action influenced by {self.emotion}")
-
-    def vote(self, proposal):
-        for value in self.values:
-            if value in proposal:
-                return True
-        return False
+    def combine_elements(self):
+        combined_elements = []
+        for i, element1 in enumerate(self.elements):
+            for element2 in self.elements[i+1:]:
+                compound_name = self.rules.get((element1.name, element2.name)) or self.rules.get((element2.name, element1.name))
+                if compound_name:
+                    compound = Compound(compound_name, [element1, element2])
+                    self.compounds.append(compound)
+                    combined_elements.append(compound)
+        return combined_elements
 
     def __str__(self):
-        return f"Entity(name={self.name}, emotion={self.emotion}, values={self.values})"
+        elements_str = ', '.join([str(e) for e in self.elements])
+        compounds_str = ', '.join([str(c) for c in self.compounds])
+        return f"World with elements: [{elements_str}] and compounds: [{compounds_str}]"
