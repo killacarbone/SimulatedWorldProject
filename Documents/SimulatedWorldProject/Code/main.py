@@ -1,7 +1,7 @@
-import time
 import random
+import time
 from simulation.world import World
-from simulation.element import Element
+from simulation.element import get_periodic_table
 
 def main():
     # Initialize your world here
@@ -9,12 +9,15 @@ def main():
 
     try:
         world.load_state()
+        print("Previous state loaded successfully.")
     except FileNotFoundError:
         print("No previous state found. Initializing with new elements.")
-        hydrogen = Element("Hydrogen", "H", 1, "high", "low", random.randint(0, 100), random.randint(0, 100))
-        oxygen = Element("Oxygen", "O", 8, "high", "low", random.randint(0, 100), random.randint(0, 100))
-        world.add_element(hydrogen)
-        world.add_element(oxygen)
+        # Add elements from the periodic table dynamically
+        for element in get_periodic_table():
+            # Assign random positions to the elements
+            element.position_x = random.randint(0, 100)
+            element.position_y = random.randint(0, 100)
+            world.add_element(element)
 
     try:
         while True:
@@ -25,6 +28,7 @@ def main():
     except KeyboardInterrupt:
         print("Simulation stopped by user.")
         world.save_state()
+        print("State saved successfully.")
 
 if __name__ == "__main__":
     main()

@@ -1,15 +1,15 @@
 class Element:
-    def __init__(self, name, symbol, atomic_number, reactivity, stability, x, y):
+    def __init__(self, name, symbol, atomic_number, reactivity, stability, position_x=0, position_y=0):
         self.name = name
         self.symbol = symbol
         self.atomic_number = atomic_number
         self.reactivity = reactivity
         self.stability = stability
-        self.x = x  # Position in the 2D space
-        self.y = y  # Position in the 2D space
+        self.position_x = position_x
+        self.position_y = position_y
 
     def __str__(self):
-        return f"{self.name} ({self.symbol}), Atomic Number: {self.atomic_number}, Reactivity: {self.reactivity}, Stability: {self.stability}"
+        return f"{self.name} ({self.symbol}), Atomic Number: {self.atomic_number}, Reactivity: {self.reactivity}, Stability: {self.stability}, Position: ({self.position_x}, {self.position_y})"
 
 # Define the periodic table with more elements
 periodic_table = [
