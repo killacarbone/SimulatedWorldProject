@@ -12,4 +12,6 @@ class Element:
     def react_with(self, other):
         if self.reactivity == 'high' and other.reactivity == 'high':
             return f"{self.symbol}{other.symbol} compound formed"
+        elif self.reactivity == 'very high' or other.reactivity == 'very high':
+            return f"{self.symbol}{other.symbol} compound formed"
         return "No reaction"

@@ -38,8 +38,12 @@ def main():
     # Test reactions
     reaction_1 = hydrogen.react_with(oxygen)
     reaction_2 = carbon.react_with(oxygen)
+    reaction_3 = nitrogen.react_with(oxygen)
+    reaction_4 = sulfur.react_with(hydrogen)
     world.add_event(reaction_1)
     world.add_event(reaction_2)
+    world.add_event(reaction_3)
+    world.add_event(reaction_4)
 
     # Print the summary of the world
     world.print_summary()

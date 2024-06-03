@@ -14,8 +14,8 @@ class World:
         self.events.append(event)
 
     def print_summary(self):
-        print("World Summary:")
-        print("\nElements:")
+        print("World Summary:\n")
+        print("Elements:")
         for element in self.elements:
             print(element)
         print("\nCompounds:")
