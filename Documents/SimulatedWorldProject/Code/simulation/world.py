@@ -33,6 +33,17 @@ class World:
                         self.compounds.append(compound_name)
                         print(f"{compound_name} compound formed")
 
+        # Print the current state of elements and compounds for debugging
+        print("Current elements:")
+        for element in self.elements:
+            print(element)
+        
+        print("Current compounds:")
+        for compound in self.compounds:
+            print(compound)
+        
+        print("\n--- End of Time Step ---\n")
+
     def save_state(self):
         state = {
             "elements": [(e.name, e.symbol, e.atomic_number, e.reactivity, e.stability, e.position_x, e.position_y) for e in self.elements],
