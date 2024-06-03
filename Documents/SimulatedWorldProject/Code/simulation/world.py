@@ -5,6 +5,9 @@ from .element import Element
 from .element_ratios import get_element_ratios
 from .key_compounds import get_key_compounds
 
+# Configure logging
+logging.basicConfig(filename='simulation.log', level=logging.INFO, format='%(asctime)s %(message)s')
+
 class World:
     def __init__(self):
         self.elements = []
@@ -12,18 +15,14 @@ class World:
         self.load_key_compounds()
         self.initialize_elements()
 
-        # Setup logging
-        logging.basicConfig(filename='simulation.log', level=logging.INFO, format='%(asctime)s - %(message)s')
-
     def add_element(self, element):
         self.elements.append(element)
 
-    def time_step(self):
-        # Add logic for compound formation with respect to ratios
+    def time_step(self, step):
+        logging.info(f"Time step: {step}")
         for element1 in self.elements:
             for element2 in self.elements:
                 if element1 != element2:
-                    # Simplified interaction logic for demonstration
                     if element1.reactivity == "high" and element2.reactivity == "high" and random.random() > 0.5:
                         compound_name = f"{element1.symbol}{element2.symbol}"
                         self.compounds.append(compound_name)
@@ -46,7 +45,7 @@ class World:
             json.dump(state, file)
         with open("world_state.json", "w") as file:
             json.dump(state, file)
-        print("State saved successfully.")
+        logging.info("State saved successfully.")
 
     def load_state(self):
         try:
@@ -54,9 +53,9 @@ class World:
                 state = json.load(file)
             self.elements = [Element(*e) for e in state["elements"]]
             self.compounds = state["compounds"]
-            print("Previous state loaded successfully.")
+            logging.info("Previous state loaded successfully.")
         except FileNotFoundError:
-            print("No previous state found. Initializing with new elements.")
+            logging.info("No previous state found. Initializing with new elements.")
 
     def load_key_compounds(self):
         key_compounds = get_key_compounds()
@@ -81,10 +80,12 @@ if __name__ == "__main__":
         world.add_element(hydrogen)
         world.add_element(oxygen)
 
+    step = 0
     try:
         while True:
-            world.time_step()
+            world.time_step(step)
+            step += 1
             time.sleep(1)
     except KeyboardInterrupt:
-        print("Simulation stopped by user.")
+        logging.info("Simulation stopped by user.")
         world.save_state()
