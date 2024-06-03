@@ -3,33 +3,29 @@
 
 # Do not ignore these files and directories
 !.gitignore
-!/Code
-!/Data
-!/Documentation
-!/Output
-!/Resources
-!/Tests
-
-# Ignore all files in subdirectories of the allowed directories
-/Code/*
-/Data/*
-/Documentation/*
-/Output/*
-/Resources/*
-/Tests/*
-
-# Allow tracking files in subdirectories
-!/Code/**
-!/Data/**
-!/Documentation/**
-!/Output/**
-!/Resources/**
-!/Tests/**
+!Code/
+!Code/**
+!Data/
+!Data/**
+!Documentation/
+!Documentation/**
+!Output/
+!Output/**
+!Resources/
+!Resources/**
+!Tests/
+!Tests/**
 
 # Ignore the virtual environment directory
-# The virtual environment directory is used to manage project-specific dependencies.
-# It is excluded from version control to avoid unnecessary files being tracked.
 venv/
 
 # Ignore __pycache__ directories
 __pycache__/
+
+# Allow tracking files in subdirectories
+!Code/**/*
+!Data/**/*
+!Documentation/**/*
+!Output/**/*
+!Resources/**/*
+!Tests/**/*
