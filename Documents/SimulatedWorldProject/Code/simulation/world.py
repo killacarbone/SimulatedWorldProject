@@ -1,6 +1,7 @@
 import json
 import random
 from collections import defaultdict
+import logging
 from .element import Element
 from .element_ratios import get_element_ratios
 from .key_compounds import get_key_compounds
@@ -12,10 +13,10 @@ class World:
     def __init__(self):
         self.elements = []
         self.compounds = defaultdict(int)
-        self.physics = Physics()
-        self.chemistry = Chemistry(self.compounds)
         self.load_key_compounds()
         self.initialize_elements()
+        self.physics = Physics()
+        self.chemistry = Chemistry(self.compounds)
 
     def add_element(self, element):
         self.elements.append(element)
