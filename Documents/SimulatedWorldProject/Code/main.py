@@ -6,7 +6,7 @@ def main():
 
     # Adding elements to the world
     hydrogen = Element("Hydrogen", "H", 1, "high", "low")
-    oxygen = Element("Oxygen", "O", 8, "moderate", "high")
+    oxygen = Element("Oxygen", "O", 8, "very high", "high")
     carbon = Element("Carbon", "C", 6, "high", "high")
     nitrogen = Element("Nitrogen", "N", 7, "moderate", "high")
     sulfur = Element("Sulfur", "S", 16, "moderate", "high")
@@ -34,6 +34,12 @@ def main():
     world.add_compound(ammonia)
     world.add_compound(methane)
     world.add_compound(sulfur_dioxide)
+
+    # Test reactions
+    reaction_1 = hydrogen.react_with(oxygen)
+    reaction_2 = carbon.react_with(oxygen)
+    world.add_event(reaction_1)
+    world.add_event(reaction_2)
 
     # Print the summary of the world
     world.print_summary()

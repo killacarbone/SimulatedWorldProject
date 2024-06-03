@@ -8,3 +8,8 @@ class Element:
 
     def __str__(self):
         return f"{self.name} ({self.symbol}), Atomic Number: {self.atomic_number}, Reactivity: {self.reactivity}, Stability: {self.stability}"
+
+    def react_with(self, other):
+        if self.reactivity == 'high' and other.reactivity == 'high':
+            return f"{self.symbol}{other.symbol} compound formed"
+        return "No reaction"
