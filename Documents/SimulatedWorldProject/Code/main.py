@@ -20,9 +20,13 @@ def main():
             world.add_element(element)
 
     try:
+        step = 0
         while True:
             # Perform a time step in the simulation
             world.time_step()
+            step += 1
+            if step % 10 == 0:  # Only log every 10 steps to reduce log size
+                print(f"Step {step} completed.")
             # Sleep for a bit to slow down the loop (adjust as needed)
             time.sleep(0.1)
     except KeyboardInterrupt:

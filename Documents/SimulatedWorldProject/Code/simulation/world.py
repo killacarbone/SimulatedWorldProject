@@ -1,8 +1,12 @@
 import json
 import random
+import logging
 from .element import Element
 from .element_ratios import get_element_ratios
 from .key_compounds import get_key_compounds
+
+# Configure logging
+logging.basicConfig(filename='simulation.log', level=logging.INFO, format='%(asctime)s:%(message)s')
 
 class World:
     def __init__(self):
@@ -10,13 +14,11 @@ class World:
         self.compounds = []
         self.load_key_compounds()
         self.initialize_elements()
-        self.step = 0
 
     def add_element(self, element):
         self.elements.append(element)
 
     def time_step(self):
-        self.step += 1
         # Add logic for compound formation with respect to ratios
         for element1 in self.elements:
             for element2 in self.elements:
@@ -25,24 +27,20 @@ class World:
                     if element1.reactivity == "high" and element2.reactivity == "high" and random.random() > 0.5:
                         compound_name = f"{element1.symbol}{element2.symbol}"
                         self.compounds.append(compound_name)
-                        if self.step % 100 == 0:  # Log every 100 steps
-                            print(f"Step {self.step}: {compound_name} compound formed")
+                        logging.info(f"Compound formed: {compound_name}")
                     elif element1.reactivity == "moderate" and element2.reactivity == "moderate" and random.random() > 0.8:
                         compound_name = f"{element1.symbol}{element2.symbol}"
                         self.compounds.append(compound_name)
-                        if self.step % 100 == 0:  # Log every 100 steps
-                            print(f"Step {self.step}: {compound_name} compound formed")
+                        logging.info(f"Compound formed: {compound_name}")
                     elif element1.reactivity == "low" and element2.reactivity == "low" and random.random() > 0.95:
                         compound_name = f"{element1.symbol}{element2.symbol}"
                         self.compounds.append(compound_name)
-                        if self.step % 100 == 0:  # Log every 100 steps
-                            print(f"Step {self.step}: {compound_name} compound formed")
+                        logging.info(f"Compound formed: {compound_name}")
 
     def save_state(self):
         state = {
             "elements": [(e.name, e.symbol, e.atomic_number, e.reactivity, e.stability, e.position_x, e.position_y) for e in self.elements],
-            "compounds": self.compounds,
-            "step": self.step
+            "compounds": self.compounds
         }
         with open("simulation_state.json", "w") as file:
             json.dump(state, file)
@@ -56,7 +54,6 @@ class World:
                 state = json.load(file)
             self.elements = [Element(*e) for e in state["elements"]]
             self.compounds = state["compounds"]
-            self.step = state.get("step", 0)
             print("Previous state loaded successfully.")
         except FileNotFoundError:
             print("No previous state found. Initializing with new elements.")
@@ -87,7 +84,7 @@ if __name__ == "__main__":
     try:
         while True:
             world.time_step()
-            time.sleep(0.1)  # Add a small delay to slow down the simulation
+            time.sleep(1)
     except KeyboardInterrupt:
         print("Simulation stopped by user.")
         world.save_state()
