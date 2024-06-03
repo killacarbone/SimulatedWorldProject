@@ -1,15 +1,14 @@
-# physics.py
-
 import math
 import logging
 
 class Physics:
     def apply_gravity(self, elements):
-        gravity_constant = 9.8  # Acceleration due to gravity in m/s^2
+        gravity_constant = 9.81  # Simplified gravity constant for the simulation
         for element in elements:
-            acceleration = gravity_constant / element.mass  # Simplified calculation for gravity effect
-            element.position_y -= acceleration
-            logging.info(f"Gravity applied to element {element.symbol}: new position ({element.position_x}, {element.position_y}), acceleration {acceleration}")
+            if element.mass != 0:  # Check to prevent division by zero
+                acceleration = gravity_constant / element.mass  # Simplified calculation for gravity effect
+                element.position_y -= acceleration
+                logging.info(f"Gravity applied to element {element.symbol}: new position ({element.position_x}, {element.position_y})")
 
     def detect_collisions(self, elements, chemistry):
         for i, element1 in enumerate(elements):
