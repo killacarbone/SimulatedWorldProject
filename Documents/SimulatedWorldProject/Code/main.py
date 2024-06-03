@@ -3,6 +3,7 @@ import time
 from simulation.world import World
 from simulation.element import get_periodic_table
 
+
 def main():
     world = World()
 
@@ -11,14 +12,17 @@ def main():
         print("Previous state loaded successfully.")
     except FileNotFoundError:
         print("No previous state found. Initializing with new elements.")
-        for element in get_periodic_table():
+        periodic_table = get_periodic_table()
+        for element in periodic_table:
             element.position_x = random.randint(0, 100)
             element.position_y = random.randint(0, 100)
             world.add_element(element)
 
     try:
-        for step in range(0, 150, 10):  # Run for 150 steps, logging every 10 steps
+        step = 0
+        while True:
             world.time_step(step)
+            step += 1
             time.sleep(1)
     except KeyboardInterrupt:
         print("Simulation stopped by user.")
