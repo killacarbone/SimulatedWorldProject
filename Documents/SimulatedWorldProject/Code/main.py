@@ -20,13 +20,11 @@ def main():
             world.add_element(element)
 
     try:
-        step = 1
         while True:
             # Perform a time step in the simulation
-            world.time_step(step)
+            world.time_step()
             # Sleep for a bit to slow down the loop (adjust as needed)
-            time.sleep(1)
-            step += 1
+            time.sleep(0.1)
     except KeyboardInterrupt:
         print("Simulation stopped by user.")
         world.save_state()
