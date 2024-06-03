@@ -22,35 +22,8 @@ def main():
     world.add_event(random_event)
     oxygen.reactivity = "very high"
 
-    # Adding compounds to the world
-    water = f"Water (H2O) composed of {hydrogen.symbol} + {oxygen.symbol}"
-    carbon_dioxide = f"Carbon Dioxide (CO2) composed of {oxygen.symbol} + {carbon.symbol}"
-    ammonia = f"Ammonia (NH3) composed of {nitrogen.symbol} + {hydrogen.symbol}"
-    methane = f"Methane (CH4) composed of {carbon.symbol} + {hydrogen.symbol}"
-    sulfur_dioxide = f"Sulfur Dioxide (SO2) composed of {sulfur.symbol} + {oxygen.symbol}"
-
-    world.add_compound(water)
-    world.add_compound(carbon_dioxide)
-    world.add_compound(ammonia)
-    world.add_compound(methane)
-    world.add_compound(sulfur_dioxide)
-
-    # Test reactions
-    reaction_1 = hydrogen.react_with(oxygen)
-    reaction_2 = carbon.react_with(oxygen)
-    reaction_3 = nitrogen.react_with(oxygen)
-    reaction_4 = sulfur.react_with(hydrogen)
-    reaction_5 = hydrogen.react_with(nitrogen)
-    reaction_6 = nitrogen.react_with(carbon)
-    reaction_7 = sulfur.react_with(carbon)
-
-    world.add_event(reaction_1)
-    world.add_event(reaction_2)
-    world.add_event(reaction_3)
-    world.add_event(reaction_4)
-    world.add_event(reaction_5)
-    world.add_event(reaction_6)
-    world.add_event(reaction_7)
+    # Simulate reactions
+    world.simulate_reactions()
 
     # Print the summary of the world
     world.print_summary()

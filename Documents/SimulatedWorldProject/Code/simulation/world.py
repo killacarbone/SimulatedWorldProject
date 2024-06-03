@@ -13,6 +13,16 @@ class World:
     def add_event(self, event):
         self.events.append(event)
 
+    def simulate_reactions(self):
+        for i, element1 in enumerate(self.elements):
+            for element2 in self.elements[i + 1:]:
+                reaction = element1.react_with(element2)
+                if "compound formed" in reaction:
+                    self.add_event(reaction)
+                    compound_name = reaction.split()[0]
+                    if compound_name not in [c for c in self.compounds]:
+                        self.add_compound(compound_name)
+
     def print_summary(self):
         print("World Summary:\n")
         print("Elements:")

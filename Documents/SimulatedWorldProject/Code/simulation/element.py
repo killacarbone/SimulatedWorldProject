@@ -16,4 +16,8 @@ class Element:
             return f"{self.symbol}{other.symbol} compound formed"
         elif self.reactivity == 'moderate' and other.reactivity in ['high', 'very high']:
             return f"{self.symbol}{other.symbol} compound formed"
+        elif self.reactivity == 'moderate' and other.reactivity == 'moderate':
+            return f"{self.symbol}{other.symbol} compound formed"
+        elif self.reactivity == 'low' and other.reactivity in ['high', 'very high', 'moderate']:
+            return f"{self.symbol}{other.symbol} compound formed"
         return "No reaction"
