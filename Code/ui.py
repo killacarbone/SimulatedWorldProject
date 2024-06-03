@@ -1,15 +1,13 @@
 import tkinter as tk
-from tkinter import scrolledtext
-from simulation.world import World
+from tkinter import ttk
 import threading
 import time
+from simulation.world import World
 
 class SimulationApp:
     def __init__(self, master):
         self.master = master
-        self.master.title("Simulated World Project")
-
-        self.simulation = World()
+        self.world = World()
         self.running = False
 
         self.start_button = tk.Button(master, text="Start", command=self.start_simulation)
@@ -24,10 +22,16 @@ class SimulationApp:
         self.status_label = tk.Label(master, text="Status: Paused")
         self.status_label.pack()
 
-        self.data_display = scrolledtext.ScrolledText(master, width=80, height=20)
-        self.data_display.pack()
+        self.filter_label = tk.Label(master, text="Filter Elements:")
+        self.filter_label.pack()
+        self.filter_var = tk.StringVar()
+        self.filter_dropdown = ttk.Combobox(master, textvariable=self.filter_var)
+        self.filter_dropdown['values'] = self.get_element_symbols()
+        self.filter_dropdown.pack()
+        self.filter_dropdown.bind("<<ComboboxSelected>>", self.update_data_display)
 
-        master.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.data_text = tk.Text(master, height=20, width=80)
+        self.data_text.pack()
 
     def start_simulation(self):
         self.running = True
@@ -49,20 +53,28 @@ class SimulationApp:
     def run_simulation(self):
         step = 0
         while self.running:
-            self.simulation.time_step(step)
+            self.world.time_step(step)
             self.update_data_display()
             step += 1
             time.sleep(1)  # Adjust the speed of simulation as needed
+        self.status_label.config(text="Status: Stopped")
 
-    def update_data_display(self):
-        self.data_display.delete(1.0, tk.END)
+    def update_data_display(self, event=None):
+        self.data_text.delete(1.0, tk.END)
         data = self.get_simulation_data()
-        self.data_display.insert(tk.END, data)
+        self.data_text.insert(tk.END, data)
 
     def get_simulation_data(self):
-        elements_data = "\n".join([f"{e.name} ({e.symbol}): Position ({e.position_x}, {e.position_y}), State ({e.state}), Temperature ({e.temperature})" for e in self.simulation.elements])
-        compounds_data = "\n".join([f"{compound}: {count}" for compound, count in self.simulation.compounds.items()])
-        return f"Elements:\n{elements_data}\n\nCompounds:\n{compounds_data}"
+        filter_symbol = self.filter_var.get()
+        elements_data = [
+            f"{e.name} ({e.symbol}): Position ({e.position_x}, {e.position_y}), State ({e.state}), Temperature ({e.temperature})"
+            for e in self.world.elements if not filter_symbol or e.symbol == filter_symbol
+        ]
+        compounds_data = "\n".join([f"{compound}: {count}" for compound, count in self.world.compounds.items()])
+        return f"Elements:\n" + "\n".join(elements_data) + f"\n\nCompounds:\n{compounds_data}"
+
+    def get_element_symbols(self):
+        return sorted(set(e.symbol for e in self.world.elements))
 
     def on_closing(self):
         self.running = False
@@ -71,4 +83,5 @@ class SimulationApp:
 if __name__ == "__main__":
     root = tk.Tk()
     app = SimulationApp(root)
+    root.protocol("WM_DELETE_WINDOW", app.on_closing)
     root.mainloop()
