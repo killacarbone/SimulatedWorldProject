@@ -61,5 +61,8 @@ class World:
         periodic_table = get_periodic_table()
         for symbol, count in element_ratios.items():
             for _ in range(count):
-                element = next(e for e in periodic_table if e.symbol == symbol)
-                self.add_element(element)
+                element = next((e for e in periodic_table if e.symbol == symbol), None)
+                if element:
+                    self.add_element(element)
+                else:
+                    print(f"Element {symbol} not found in periodic table.")
