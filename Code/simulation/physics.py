@@ -3,12 +3,14 @@ import logging
 
 class Physics:
     def apply_gravity(self, elements):
-        gravity_constant = 9.81  # m/s^2, acceleration due to gravity
+        gravity_constant = 9.81  # m/s^2
         for element in elements:
-            if element.mass > 0:  # Avoid division by zero
-                acceleration = gravity_constant * (element.mass / element.volume)  # Calculate acceleration based on mass and volume
-                element.position_y -= acceleration  # Apply gravity
+            if element.mass != 0:
+                acceleration = gravity_constant / element.mass
+                element.position_y -= acceleration
                 logging.info(f"Gravity applied to element {element.symbol}: new position ({element.position_x}, {element.position_y})")
+            else:
+                logging.warning(f"Element {element.symbol} has zero mass, skipping gravity application.")
 
     def detect_collisions(self, elements, chemistry):
         for i, element1 in enumerate(elements):
@@ -31,8 +33,10 @@ class Physics:
 
     def apply_thermal_dynamics(self, elements):
         for element in elements:
-            if element.temperature > element.melting_point:
-                element.state = 'liquid'
-            elif element.temperature > element.boiling_point:
+            initial_state = element.state
+            if element.temperature > element.boiling_point:
                 element.state = 'gas'
-            logging.info(f"Thermal dynamics applied to element {element.symbol}: state {element.state}, temperature {element.temperature}")
+            elif element.temperature > element.melting_point:
+                element.state = 'liquid'
+            if initial_state != element.state:
+                logging.info(f"Thermal dynamics applied to element {element.symbol}: state changed to {element.state}, temperature {element.temperature}")

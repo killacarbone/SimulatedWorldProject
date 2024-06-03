@@ -24,6 +24,8 @@ class World:
     def time_step(self, step):
         self.chemistry.time_step_counter = step
         self.physics.apply_gravity(self.elements)
+        self.physics.apply_electromagnetic_forces(self.elements)
+        self.physics.apply_thermal_dynamics(self.elements)
         self.physics.detect_collisions(self.elements, self.chemistry)
         self.chemistry.log_state()
 
