@@ -23,6 +23,9 @@ def main():
     # Combine elements to form compounds
     world.combine_elements()
     
+    # Introduce a random event
+    world.random_event()
+    
     # Print the world state
     print(world)
 

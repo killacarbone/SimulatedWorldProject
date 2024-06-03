@@ -1,4 +1,6 @@
 # world.py
+from random import choice
+
 class World:
     def __init__(self):
         self.elements = []
@@ -8,15 +10,31 @@ class World:
         self.elements.append(element)
     
     def combine_elements(self):
-        # This is a placeholder for a more complex combination logic
-        # Example: Water from Hydrogen and Oxygen
-        if any(e.symbol == "H" for e in self.elements) and any(e.symbol == "O" for e in self.elements):
-            water = f"Water composed of Hydrogen + Oxygen"
-            self.compounds.append(water)
-        # Example: Carbon Dioxide from Carbon and Oxygen
-        if any(e.symbol == "C" for e in self.elements) and any(e.symbol == "O" for e in self.elements):
-            carbon_dioxide = f"Carbon Dioxide composed of Oxygen + Carbon"
-            self.compounds.append(carbon_dioxide)
+        # Define possible combinations and reactions
+        possible_combinations = [
+            ("H", "O", "Water", "H2O"),
+            ("C", "O", "Carbon Dioxide", "CO2"),
+            ("N", "H", "Ammonia", "NH3"),
+            ("C", "H", "Methane", "CH4"),
+            ("S", "O", "Sulfur Dioxide", "SO2")
+        ]
+        
+        for combo in possible_combinations:
+            if all(any(e.symbol == elem for e in self.elements) for elem in combo[:2]):
+                compound = f"{combo[2]} ({combo[3]}) composed of {' + '.join(combo[:2])}"
+                self.compounds.append(compound)
+    
+    def random_event(self):
+        events = ["increase reactivity", "decrease stability"]
+        affected_element = choice(self.elements)
+        event = choice(events)
+        
+        if event == "increase reactivity":
+            affected_element.reactivity = "very high"
+        elif event == "decrease stability":
+            affected_element.stability = "very low"
+        
+        print(f"Random event: {affected_element.name} is affected by {event}")
     
     def __str__(self):
         elements_str = ', '.join(str(e) for e in self.elements)
