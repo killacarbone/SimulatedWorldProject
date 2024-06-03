@@ -6,13 +6,13 @@ from .element import Element
 from .element_ratios import get_element_ratios
 from .key_compounds import get_key_compounds
 
-# Configure logging
-logging.basicConfig(filename='simulation.log', level=logging.INFO, format='%(asctime)s:%(message)s')
+# Set up logging
+logging.basicConfig(filename="simulation.log", level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
 
 class World:
     def __init__(self):
         self.elements = []
-        self.compounds = defaultdict(int)  # Use defaultdict for counting compounds
+        self.compounds = defaultdict(int)  # Use defaultdict to count occurrences of compounds
         self.load_key_compounds()
         self.initialize_elements()
 
@@ -20,8 +20,6 @@ class World:
         self.elements.append(element)
 
     def time_step(self, step):
-        compound_counts = defaultdict(int)
-        
         # Add logic for compound formation with respect to ratios
         for element1 in self.elements:
             for element2 in self.elements:
@@ -29,28 +27,21 @@ class World:
                     # Simplified interaction logic for demonstration
                     if element1.reactivity == "high" and element2.reactivity == "high" and random.random() > 0.5:
                         compound_name = f"{element1.symbol}{element2.symbol}"
-                        compound_counts[compound_name] += 1
+                        self.compounds[compound_name] += 1
+                        logging.info(f"Step {step}: {compound_name} compound formed")
                     elif element1.reactivity == "moderate" and element2.reactivity == "moderate" and random.random() > 0.8:
                         compound_name = f"{element1.symbol}{element2.symbol}"
-                        compound_counts[compound_name] += 1
+                        self.compounds[compound_name] += 1
+                        logging.info(f"Step {step}: {compound_name} compound formed")
                     elif element1.reactivity == "low" and element2.reactivity == "low" and random.random() > 0.95:
                         compound_name = f"{element1.symbol}{element2.symbol}"
-                        compound_counts[compound_name] += 1
-        
-        # Update the overall compounds count
-        for compound, count in compound_counts.items():
-            self.compounds[compound] += count
-        
-        # Log the counts every minute
-        if step % 600 == 0:  # Adjust the interval as needed (e.g., every 600 steps)
-            for compound, count in self.compounds.items():
-                logging.info(f"Compound formed: {compound} x{count}")
-            self.compounds.clear()  # Clear the counts after logging
+                        self.compounds[compound_name] += 1
+                        logging.info(f"Step {step}: {compound_name} compound formed")
 
     def save_state(self):
         state = {
             "elements": [(e.name, e.symbol, e.atomic_number, e.reactivity, e.stability, e.position_x, e.position_y) for e in self.elements],
-            "compounds": dict(self.compounds)  # Convert defaultdict to dict for saving
+            "compounds": dict(self.compounds)
         }
         with open("simulation_state.json", "w") as file:
             json.dump(state, file)
@@ -78,3 +69,27 @@ class World:
         for symbol, count in element_ratios.items():
             for _ in range(count):
                 self.add_element(Element(name=symbol, symbol=symbol, atomic_number=1, reactivity="high", stability="low"))
+
+# Run the simulation
+if __name__ == "__main__":
+    import time
+    world = World()
+    try:
+        world.load_state()
+    except FileNotFoundError:
+        hydrogen = Element("Hydrogen", "H", 1, "high", "low", random.randint(0, 100), random.randint(0, 100))
+        oxygen = Element("Oxygen", "O", 8, "high", "low", random.randint(0, 100), random.randint(0, 100))
+        world.add_element(hydrogen)
+        world.add_element(oxygen)
+
+    try:
+        step = 0
+        while True:
+            step += 1
+            world.time_step(step)
+            if step % 10 == 0:
+                print(f"Step {step} completed.")
+            time.sleep(0.1)  # Adjust the sleep time to control the simulation speed
+    except KeyboardInterrupt:
+        print("Simulation stopped by user.")
+        world.save_state()
