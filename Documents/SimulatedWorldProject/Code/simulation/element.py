@@ -1,13 +1,15 @@
 class Element:
-    def __init__(self, name, symbol, atomic_number, reactivity, stability):
+    def __init__(self, name, symbol, atomic_number, reactivity, stability, x=0, y=0):
         self.name = name
         self.symbol = symbol
         self.atomic_number = atomic_number
         self.reactivity = reactivity
         self.stability = stability
+        self.x = x  # x-coordinate in the simulation space
+        self.y = y  # y-coordinate in the simulation space
 
     def __str__(self):
-        return f"{self.name} ({self.symbol}), Atomic Number: {self.atomic_number}, Reactivity: {self.reactivity}, Stability: {self.stability}"
+        return f"{self.name} ({self.symbol}), Atomic Number: {self.atomic_number}, Reactivity: {self.reactivity}, Stability: {self.stability}, Position: ({self.x}, {self.y})"
 
 # Define the periodic table with more elements
 periodic_table = [
@@ -24,9 +26,9 @@ periodic_table = [
     # Add all other elements up to Oganesson (element 118)
     Element("Rhenium", "Re", 75, "moderate", "moderate"),
     Element("Osmium", "Os", 76, "moderate", "moderate"),
-    Element("Iridium", "Ir", 77, "moderate", "stable"),
+    Element("Iridium", "Ir", 77, "moderate", "high"),
     Element("Platinum", "Pt", 78, "moderate", "high"),
-    Element("Gold", "Au", 79, "moderate", "stable"),
+    Element("Gold", "Au", 79, "moderate", "high"),
     Element("Mercury", "Hg", 80, "low", "low"),
     Element("Thallium", "Tl", 81, "moderate", "low"),
     Element("Lead", "Pb", 82, "moderate", "moderate"),
