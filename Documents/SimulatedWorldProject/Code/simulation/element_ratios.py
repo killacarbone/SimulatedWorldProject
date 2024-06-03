@@ -1,9 +1,68 @@
 element_ratios = {
-    "H": 75.0,
-    "O": 23.0,
-    "N": 1.25,
-    "C": 0.5,
-    # Add more elements and their ratios
+    "H": 100,  # Hydrogen
+    "He": 5,   # Helium
+    "Li": 20,  # Lithium
+    "Be": 10,  # Beryllium
+    "B": 15,   # Boron
+    "C": 50,   # Carbon
+    "N": 80,   # Nitrogen
+    "O": 90,   # Oxygen
+    "F": 10,   # Fluorine
+    "Ne": 5,   # Neon
+    "Na": 30,  # Sodium
+    "Mg": 25,  # Magnesium
+    "Al": 35,  # Aluminium
+    "Si": 40,  # Silicon
+    "P": 20,   # Phosphorus
+    "S": 50,   # Sulfur
+    "Cl": 25,  # Chlorine
+    "Ar": 5,   # Argon
+    "K": 25,   # Potassium
+    "Ca": 30,  # Calcium
+    "Re": 1,   # Rhenium
+    "Os": 1,   # Osmium
+    "Ir": 1,   # Iridium
+    "Pt": 1,   # Platinum
+    "Au": 1,   # Gold
+    "Hg": 1,   # Mercury
+    "Tl": 1,   # Thallium
+    "Pb": 1,   # Lead
+    "Bi": 1,   # Bismuth
+    "Po": 1,   # Polonium
+    "At": 1,   # Astatine
+    "Rn": 1,   # Radon
+    "Fr": 1,   # Francium
+    "Ra": 1,   # Radium
+    "Ac": 1,   # Actinium
+    "Th": 1,   # Thorium
+    "Pa": 1,   # Protactinium
+    "U": 1,    # Uranium
+    "Np": 1,   # Neptunium
+    "Pu": 1,   # Plutonium
+    "Am": 1,   # Americium
+    "Cm": 1,   # Curium
+    "Bk": 1,   # Berkelium
+    "Cf": 1,   # Californium
+    "Es": 1,   # Einsteinium
+    "Fm": 1,   # Fermium
+    "Md": 1,   # Mendelevium
+    "No": 1,   # Nobelium
+    "Lr": 1,   # Lawrencium
+    "Rf": 1,   # Rutherfordium
+    "Db": 1,   # Dubnium
+    "Sg": 1,   # Seaborgium
+    "Bh": 1,   # Bohrium
+    "Hs": 1,   # Hassium
+    "Mt": 1,   # Meitnerium
+    "Ds": 1,   # Darmstadtium
+    "Rg": 1,   # Roentgenium
+    "Cn": 1,   # Copernicium
+    "Nh": 1,   # Nihonium
+    "Fl": 1,   # Flerovium
+    "Mc": 1,   # Moscovium
+    "Lv": 1,   # Livermorium
+    "Ts": 1,   # Tennessine
+    "Og": 1    # Oganesson
 }
 
 def get_element_ratios():
