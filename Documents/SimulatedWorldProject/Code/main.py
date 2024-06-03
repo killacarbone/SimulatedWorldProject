@@ -1,19 +1,22 @@
+import time
 from simulation.world import World
-from simulation.element import periodic_table
 
 def main():
+    # Initialize your world here
     world = World()
-    
-    print("Adding elements to the world...")
-    for element in periodic_table:
-        world.add_element(element)
-    print("Elements added.")
-    
-    print("Triggering random event...")
-    world.trigger_random_event()
-    
-    print("Random event triggered. Printing summary...\n")
-    world.print_summary()
+
+    try:
+        while True:
+            # Perform a time step in the simulation
+            world.time_step()
+
+            # Print the summary for the current time step
+            world.print_summary()
+
+            # Sleep for a bit to slow down the loop (adjust as needed)
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("Simulation stopped by user.")
 
 if __name__ == "__main__":
     main()

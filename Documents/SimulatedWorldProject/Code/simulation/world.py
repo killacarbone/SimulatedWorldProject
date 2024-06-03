@@ -1,41 +1,48 @@
 import random
-from .element import Element
+from simulation.element import get_periodic_table
 
 class World:
     def __init__(self):
-        self.elements = []
+        self.elements = get_periodic_table()
         self.compounds = []
-        self.time_step = 0
-        self.reactions = []
+        self.time_step_count = 0
+        self.recent_events = []
 
-    def add_element(self, element):
-        self.elements.append(element)
+    def time_step(self):
+        self.time_step_count += 1
+        self.recent_events = []
+        self.trigger_random_event()
+        self.check_for_new_compounds()
 
     def trigger_random_event(self):
-        event = random.choice(self.elements)
-        if event.reactivity == "high":
-            event.reactivity = "very high"
-            print(f"{event.name} is affected by increased reactivity")
-        elif event.reactivity == "moderate":
-            event.stability = "low"
-            print(f"{event.name} is affected by decreased stability")
-        self.reactions.append(f"{event.name} is affected by {event.reactivity}")
+        element = random.choice(self.elements)
+        event_type = random.choice(["increase_reactivity", "decrease_reactivity", "increase_stability", "decrease_stability"])
+        if event_type == "increase_reactivity":
+            self.recent_events.append(f"{element.name} is affected by increased reactivity")
+            element.reactivity = "very high"
+        elif event_type == "decrease_reactivity":
+            self.recent_events.append(f"{element.name} is affected by decreased reactivity")
+            element.reactivity = "low"
+        elif event_type == "increase_stability":
+            self.recent_events.append(f"{element.name} is affected by increased stability")
+            element.stability = "high"
+        elif event_type == "decrease_stability":
+            self.recent_events.append(f"{element.name} is affected by decreased stability")
+            element.stability = "low"
 
-    def update(self):
-        self.time_step += 1
-        new_compounds = []
-        for i, elem1 in enumerate(self.elements):
-            for elem2 in self.elements[i+1:]:
-                if elem1.reactivity == "very high" and elem2.reactivity in ["high", "very high"]:
-                    compound = f"{elem1.symbol}{elem2.symbol}"
-                    if compound not in self.compounds:
-                        new_compounds.append(compound)
-                        print(f"{compound} compound formed")
-        self.compounds.extend(new_compounds)
+    def check_for_new_compounds(self):
+        for i in range(len(self.elements)):
+            for j in range(i + 1, len(self.elements)):
+                element1 = self.elements[i]
+                element2 = self.elements[j]
+                if random.random() < 0.1:  # Random chance to form a new compound
+                    compound = f"{element1.symbol}{element2.symbol}"
+                    self.compounds.append(compound)
+                    self.recent_events.append(f"{compound} compound formed")
 
     def print_summary(self):
-        print(f"Time step: {self.time_step}\n")
-        print("World Summary:")
+        print(f"\nTime step: {self.time_step_count}\n")
+        print("World Summary:\n")
         print("Elements:")
         for element in self.elements:
             print(element)
@@ -43,6 +50,5 @@ class World:
         for compound in self.compounds:
             print(compound)
         print("\nRecent Events:")
-        for reaction in self.reactions:
-            print(reaction)
-
+        for event in self.recent_events:
+            print(event)
