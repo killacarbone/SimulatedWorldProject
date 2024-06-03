@@ -23,7 +23,7 @@ def main():
         step = 0
         while True:
             # Perform a time step in the simulation
-            world.time_step()
+            world.time_step(step)
             step += 1
             if step % 10 == 0:  # Only log every 10 steps to reduce log size
                 print(f"Step {step} completed.")
