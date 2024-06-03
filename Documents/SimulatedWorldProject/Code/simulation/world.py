@@ -1,48 +1,36 @@
 import random
-from simulation.element import Element
+from .element import Element
 
 class World:
     def __init__(self):
         self.elements = []
-        self.recent_events = []
         self.compounds = []
+        self.time_step = 0
+        self.reactions = []
 
     def add_element(self, element):
         self.elements.append(element)
 
-    def form_compounds(self):
-        possible_combinations = [
-            ("H", "O"), ("C", "O"), ("N", "H"), ("C", "H"), ("S", "O"),
-            ("H", "N"), ("H", "C"), ("O", "C"), ("N", "O")
-        ]
-        for combo in possible_combinations:
-            elements_in_combo = [e.symbol for e in self.elements]
-            if all(e in elements_in_combo for e in combo):
-                # Check reactivity conditions
-                e1 = next(e for e in self.elements if e.symbol == combo[0])
-                e2 = next(e for e in self.elements if e.symbol == combo[1])
-                if (e1.reactivity == "high" or e1.reactivity == "very high") and (e2.reactivity == "high" or e2.reactivity == "very high"):
-                    compound_name = f"{combo[0]}{combo[1]}"
-                    if compound_name not in self.compounds:
-                        self.compounds.append(compound_name)
-                        self.recent_events.append(f"{compound_name} compound formed")
-                    else:
-                        self.recent_events.append("No reaction")
-
     def trigger_random_event(self):
-        if self.elements:
-            element = random.choice(self.elements)
-            event_type = random.choice(["reactivity", "stability"])
-            if event_type == "reactivity":
-                element.reactivity = "very high" if element.reactivity == "high" else "high"
-                self.recent_events.append(f"{element.name} is affected by increased reactivity")
-            elif event_type == "stability":
-                element.stability = "low" if element.stability == "high" else "high"
-                self.recent_events.append(f"{element.name} is affected by decreased stability")
-        self.form_compounds()
+        event = random.choice(self.elements)
+        event.reactivity = "very high" if event.reactivity == "high" else "high"
+        print(f"{event.name} is affected by increased reactivity")
+
+    def update(self):
+        self.time_step += 1
+        new_compounds = []
+        for i, elem1 in enumerate(self.elements):
+            for elem2 in self.elements[i+1:]:
+                if elem1.reactivity == "very high" and elem2.reactivity == "high":
+                    compound = f"{elem1.symbol}{elem2.symbol}"
+                    if compound not in self.compounds:
+                        new_compounds.append(compound)
+                        print(f"{compound} compound formed")
+        self.compounds.extend(new_compounds)
 
     def print_summary(self):
-        print("\nWorld Summary:")
+        print(f"Time step: {self.time_step}\n")
+        print("World Summary:")
         print("Elements:")
         for element in self.elements:
             print(element)
@@ -50,6 +38,7 @@ class World:
         for compound in self.compounds:
             print(compound)
         print("\nRecent Events:")
-        for event in self.recent_events:
-            print(event)
-        self.recent_events.clear()
+        for reaction in self.reactions:
+            print(reaction)
+
+# Note: This is a simplified version. You can add more logic to handle complex interactions, events, and states.
