@@ -1,6 +1,7 @@
 import time
+import random
 from simulation.world import World
-from simulation.elements import Element
+from simulation.element import Element
 
 def main():
     # Initialize your world here
