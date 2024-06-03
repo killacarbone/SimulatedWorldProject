@@ -60,8 +60,15 @@ class World:
             for _ in range(count):
                 element = next((e for e in periodic_table if e.symbol == symbol), None)
                 if element:
-                    element.position_x = random.uniform(-100, 100)  # Random initial position
-                    element.position_y = random.uniform(-100, 100)  # Random initial position
-                    self.add_element(element)
+                    # Create a copy of the element to ensure each has a unique position
+                    new_element = Element(
+                        element.name, element.symbol, element.atomic_number, element.reactivity,
+                        element.stability, element.mass, element.volume, element.charge,
+                        element.temperature, element.melting_point, element.boiling_point, 
+                        element.state, 
+                        random.uniform(-100, 100),  # Random initial position
+                        random.uniform(-100, 100)   # Random initial position
+                    )
+                    self.add_element(new_element)
                 else:
                     print(f"Element {symbol} not found in periodic table.")
