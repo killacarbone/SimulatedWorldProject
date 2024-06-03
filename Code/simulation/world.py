@@ -1,5 +1,5 @@
-import json
 import random
+import json
 import logging
 from collections import defaultdict
 from .element import Element
@@ -24,8 +24,6 @@ class World:
     def time_step(self, step):
         self.chemistry.time_step_counter = step
         self.physics.apply_gravity(self.elements)
-        self.physics.apply_electromagnetic_forces(self.elements)
-        self.physics.apply_thermal_dynamics(self.elements)
         self.physics.detect_collisions(self.elements, self.chemistry)
         self.chemistry.log_state()
 
@@ -62,6 +60,8 @@ class World:
             for _ in range(count):
                 element = next((e for e in periodic_table if e.symbol == symbol), None)
                 if element:
+                    element.position_x = random.uniform(-100, 100)  # Random initial position
+                    element.position_y = random.uniform(-100, 100)  # Random initial position
                     self.add_element(element)
                 else:
                     print(f"Element {symbol} not found in periodic table.")
