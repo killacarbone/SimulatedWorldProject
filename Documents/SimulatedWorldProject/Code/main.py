@@ -40,10 +40,17 @@ def main():
     reaction_2 = carbon.react_with(oxygen)
     reaction_3 = nitrogen.react_with(oxygen)
     reaction_4 = sulfur.react_with(hydrogen)
+    reaction_5 = hydrogen.react_with(nitrogen)
+    reaction_6 = nitrogen.react_with(carbon)
+    reaction_7 = sulfur.react_with(carbon)
+
     world.add_event(reaction_1)
     world.add_event(reaction_2)
     world.add_event(reaction_3)
     world.add_event(reaction_4)
+    world.add_event(reaction_5)
+    world.add_event(reaction_6)
+    world.add_event(reaction_7)
 
     # Print the summary of the world
     world.print_summary()
