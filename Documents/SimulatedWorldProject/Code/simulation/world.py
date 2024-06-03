@@ -25,16 +25,16 @@ class World:
         self.chemistry.time_step_counter = step
         self.physics.apply_gravity(self.elements)
         self.physics.detect_collisions(self.elements, self.chemistry)
+        self.physics.apply_electromagnetic_forces(self.elements)
+        self.physics.apply_thermal_dynamics(self.elements)
         self.chemistry.log_state()
 
     def save_state(self):
         state = {
-            "elements": [(e.name, e.symbol, e.atomic_number, e.reactivity, e.stability, e.mass, e.volume, e.position_x, e.position_y) for e in self.elements],
+            "elements": [(e.name, e.symbol, e.atomic_number, e.reactivity, e.stability, e.mass, e.volume, e.charge, e.temperature, e.melting_point, e.boiling_point, e.state, e.position_x, e.position_y) for e in self.elements],
             "compounds": dict(self.compounds)
         }
         with open("simulation_state.json", "w") as file:
-            json.dump(state, file)
-        with open("world_state.json", "w") as file:
             json.dump(state, file)
         print("State saved successfully.")
 
