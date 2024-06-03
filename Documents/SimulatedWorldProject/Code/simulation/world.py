@@ -1,5 +1,6 @@
 import json
 import random
+import logging
 from .element import Element
 from .element_ratios import get_element_ratios
 from .key_compounds import get_key_compounds
@@ -10,6 +11,9 @@ class World:
         self.compounds = []
         self.load_key_compounds()
         self.initialize_elements()
+
+        # Setup logging
+        logging.basicConfig(filename='simulation.log', level=logging.INFO, format='%(asctime)s - %(message)s')
 
     def add_element(self, element):
         self.elements.append(element)
@@ -23,26 +27,15 @@ class World:
                     if element1.reactivity == "high" and element2.reactivity == "high" and random.random() > 0.5:
                         compound_name = f"{element1.symbol}{element2.symbol}"
                         self.compounds.append(compound_name)
-                        print(f"{compound_name} compound formed")
+                        logging.info(f"{compound_name} compound formed")
                     elif element1.reactivity == "moderate" and element2.reactivity == "moderate" and random.random() > 0.8:
                         compound_name = f"{element1.symbol}{element2.symbol}"
                         self.compounds.append(compound_name)
-                        print(f"{compound_name} compound formed")
+                        logging.info(f"{compound_name} compound formed")
                     elif element1.reactivity == "low" and element2.reactivity == "low" and random.random() > 0.95:
                         compound_name = f"{element1.symbol}{element2.symbol}"
                         self.compounds.append(compound_name)
-                        print(f"{compound_name} compound formed")
-
-        # Print the current state of elements and compounds for debugging
-        print("Current elements:")
-        for element in self.elements:
-            print(element)
-        
-        print("Current compounds:")
-        for compound in self.compounds:
-            print(compound)
-        
-        print("\n--- End of Time Step ---\n")
+                        logging.info(f"{compound_name} compound formed")
 
     def save_state(self):
         state = {
