@@ -1,7 +1,7 @@
 import json
 import random
-from collections import defaultdict
 import logging
+from collections import defaultdict
 from .element import Element
 from .element_ratios import get_element_ratios
 from .key_compounds import get_key_compounds
@@ -22,9 +22,9 @@ class World:
         self.elements.append(element)
 
     def time_step(self, step):
+        self.chemistry.time_step_counter = step
         self.physics.apply_gravity(self.elements)
         self.physics.detect_collisions(self.elements, self.chemistry)
-        self.chemistry.time_step_counter = step
         self.chemistry.log_state()
 
     def save_state(self):

@@ -13,3 +13,5 @@ class Chemistry:
 
     def log_state(self):
         logging.info(f"Step {self.time_step_counter} completed.")
+        for compound, count in self.compounds.items():
+            logging.info(f"Compound {compound} count: {count}")
