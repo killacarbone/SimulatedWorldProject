@@ -1,8 +1,7 @@
 import random
 import time
 from simulation.world import World
-from simulation.element import get_periodic_table
-
+from simulation.periodic_table import get_periodic_table
 
 def main():
     world = World()
@@ -18,8 +17,8 @@ def main():
             element.position_y = random.randint(0, 100)
             world.add_element(element)
 
+    step = 0
     try:
-        step = 0
         while True:
             world.time_step(step)
             step += 1

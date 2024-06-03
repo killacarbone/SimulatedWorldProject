@@ -1,20 +1,15 @@
 import json
 import random
 from collections import defaultdict
-from .periodic_table import get_periodic_table
+from .element import Element
 from .element_ratios import get_element_ratios
 from .key_compounds import get_key_compounds
-from .physics import Physics
-from .chemistry import Chemistry
-from .element import Element, get_periodic_table
-
+from .periodic_table import get_periodic_table
 
 class World:
     def __init__(self):
         self.elements = []
         self.compounds = defaultdict(int)
-        self.physics = Physics()
-        self.chemistry = Chemistry(self.compounds)
         self.load_key_compounds()
         self.initialize_elements()
 
@@ -22,17 +17,23 @@ class World:
         self.elements.append(element)
 
     def time_step(self, step):
-        self.physics.apply_gravity(self.elements)
-        self.physics.detect_collisions(self.elements, self.chemistry)
-        if step % 10 == 0:
-            print(f"Step {step} completed.")
-        if step % 100 == 0:
-            self.save_state()
+        for element1 in self.elements:
+            for element2 in self.elements:
+                if element1 != element2:
+                    if element1.reactivity == "high" and element2.reactivity == "high" and random.random() > 0.5:
+                        compound_name = f"{element1.symbol}{element2.symbol}"
+                        self.compounds[compound_name] += 1
+                    elif element1.reactivity == "moderate" and element2.reactivity == "moderate" and random.random() > 0.8:
+                        compound_name = f"{element1.symbol}{element2.symbol}"
+                        self.compounds[compound_name] += 1
+                    elif element1.reactivity == "low" and element2.reactivity == "low" and random.random() > 0.95:
+                        compound_name = f"{element1.symbol}{element2.symbol}"
+                        self.compounds[compound_name] += 1
 
     def save_state(self):
         state = {
-            "elements": [(e.name, e.symbol, e.atomic_number, e.reactivity, e.stability, e.mass, e.position_x, e.position_y, e.velocity_y) for e in self.elements],
-            "compounds": list(self.compounds.items())
+            "elements": [(e.name, e.symbol, e.atomic_number, e.reactivity, e.stability, e.mass, e.volume, e.position_x, e.position_y) for e in self.elements],
+            "compounds": dict(self.compounds)
         }
         with open("simulation_state.json", "w") as file:
             json.dump(state, file)
@@ -61,22 +62,4 @@ class World:
         for symbol, count in element_ratios.items():
             for _ in range(count):
                 element = next(e for e in periodic_table if e.symbol == symbol)
-                self.add_element(Element(name=element.name, symbol=element.symbol, atomic_number=element.atomic_number, reactivity=element.reactivity, stability=element.stability, mass=element.mass, position_x=random.randint(0, 100), position_y=random.randint(0, 100)))
-
-if __name__ == "__main__":
-    import time
-    world = World()
-    try:
-        world.load_state()
-    except FileNotFoundError:
-        pass
-
-    try:
-        step = 0
-        while True:
-            world.time_step(step)
-            step += 1
-            time.sleep(1)
-    except KeyboardInterrupt:
-        print("Simulation stopped by user.")
-        world.save_state()
+                self.add_element(element)
