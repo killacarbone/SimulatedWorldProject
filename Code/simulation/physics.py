@@ -3,11 +3,11 @@ import logging
 
 class Physics:
     def apply_gravity(self, elements):
-        gravity_constant = 9.81  # Simplified gravity constant for the simulation
+        gravity_constant = 9.81  # m/s^2, acceleration due to gravity
         for element in elements:
-            if element.mass != 0:  # Check to prevent division by zero
-                acceleration = gravity_constant / element.mass  # Simplified calculation for gravity effect
-                element.position_y -= acceleration
+            if element.mass > 0:  # Avoid division by zero
+                acceleration = gravity_constant * (element.mass / element.volume)  # Calculate acceleration based on mass and volume
+                element.position_y -= acceleration  # Apply gravity
                 logging.info(f"Gravity applied to element {element.symbol}: new position ({element.position_x}, {element.position_y})")
 
     def detect_collisions(self, elements, chemistry):
