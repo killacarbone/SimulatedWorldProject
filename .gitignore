@@ -1,0 +1,31 @@
+# Ignore everything
+*
+
+# Do not ignore these files and directories
+!.gitignore
+!Code/
+!Code/**
+!Data/
+!Data/**
+!Documentation/
+!Documentation/**
+!Output/
+!Output/**
+!Resources/
+!Resources/**
+!Tests/
+!Tests/**
+
+# Ignore the virtual environment directory
+venv/
+
+# Ignore __pycache__ directories
+__pycache__/
+
+# Allow tracking files in subdirectories
+!Code/**/*
+!Data/**/*
+!Documentation/**/*
+!Output/**/*
+!Resources/**/*
+!Tests/**/*
