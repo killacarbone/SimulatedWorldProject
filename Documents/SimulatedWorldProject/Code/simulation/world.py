@@ -1,11 +1,13 @@
 import random
 import json
 from simulation.element import Element
+from simulation.key_compounds import get_key_compounds
 
 class World:
     def __init__(self):
         self.elements = []
         self.compounds = []
+        self.key_compounds = get_key_compounds()
 
     def add_element(self, element):
         self.elements.append(element)
@@ -21,14 +23,11 @@ class World:
                         print(f"{compound_name} compound formed")
 
     def form_compound(self, element1, element2):
-        # Compound formation logic
-        # This will be a basic example and can be extended further
-        if (element1.symbol, element2.symbol) in [("H", "O"), ("O", "H")]:
-            return "H2O"
-        elif (element1.symbol, element2.symbol) in [("H", "H")]:
-            return "H2"
-        elif (element1.symbol, element2.symbol) in [("O", "O")]:
-            return "O2"
+        # Check if the pair forms a key compound
+        if (element1.symbol, element2.symbol) in self.key_compounds:
+            return self.key_compounds[(element1.symbol, element2.symbol)]
+        elif (element2.symbol, element1.symbol) in self.key_compounds:
+            return self.key_compounds[(element2.symbol, element1.symbol)]
         else:
             # Check for random less common compounds
             if element1.reactivity == "high" and element2.reactivity == "high" and random.random() > 0.5:
