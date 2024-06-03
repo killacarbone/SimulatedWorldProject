@@ -2,12 +2,21 @@ import random
 import json
 from simulation.element import Element
 from simulation.key_compounds import get_key_compounds
+from simulation.element_ratios import get_element_ratios
 
 class World:
     def __init__(self):
         self.elements = []
         self.compounds = []
         self.key_compounds = get_key_compounds()
+        self.element_ratios = get_element_ratios()
+
+    def initialize_elements(self, total_elements=1000):
+        for symbol, ratio in self.element_ratios.items():
+            count = int(total_elements * (ratio / 100))
+            for _ in range(count):
+                element = Element(name=symbol, symbol=symbol, atomic_number=1, reactivity="high", stability="low", position_x=random.randint(0, 100), position_y=random.randint(0, 100))
+                self.add_element(element)
 
     def add_element(self, element):
         self.elements.append(element)
