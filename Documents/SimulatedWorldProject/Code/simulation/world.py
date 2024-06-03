@@ -5,11 +5,15 @@ from .element import Element
 from .element_ratios import get_element_ratios
 from .key_compounds import get_key_compounds
 from .periodic_table import get_periodic_table
+from .physics import Physics
+from .chemistry import Chemistry
 
 class World:
     def __init__(self):
         self.elements = []
         self.compounds = defaultdict(int)
+        self.physics = Physics()
+        self.chemistry = Chemistry(self.compounds)
         self.load_key_compounds()
         self.initialize_elements()
 
@@ -17,18 +21,10 @@ class World:
         self.elements.append(element)
 
     def time_step(self, step):
-        for element1 in self.elements:
-            for element2 in self.elements:
-                if element1 != element2:
-                    if element1.reactivity == "high" and element2.reactivity == "high" and random.random() > 0.5:
-                        compound_name = f"{element1.symbol}{element2.symbol}"
-                        self.compounds[compound_name] += 1
-                    elif element1.reactivity == "moderate" and element2.reactivity == "moderate" and random.random() > 0.8:
-                        compound_name = f"{element1.symbol}{element2.symbol}"
-                        self.compounds[compound_name] += 1
-                    elif element1.reactivity == "low" and element2.reactivity == "low" and random.random() > 0.95:
-                        compound_name = f"{element1.symbol}{element2.symbol}"
-                        self.compounds[compound_name] += 1
+        self.physics.apply_gravity(self.elements)
+        self.physics.detect_collisions(self.elements, self.chemistry)
+        self.chemistry.time_step_counter = step
+        self.chemistry.log_state()
 
     def save_state(self):
         state = {
