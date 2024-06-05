@@ -1,3 +1,5 @@
+# periodic_table.py
+
 class Element:
     def __init__(self, name, symbol, atomic_number, reactivity, stability, mass, volume, charge=0, temperature=0, melting_point=0, boiling_point=0, state='solid', position_x=0, position_y=0):
         self.name = name
