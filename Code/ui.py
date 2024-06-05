@@ -94,7 +94,7 @@ class SimulationApp:
             for e in self.world.elements if not filter_symbol or e.symbol == filter_symbol
         ]
         compounds_data = "\n".join([f"{compound}: {count}" for compound, count in self.world.compounds.items()])
-        return f"Elements:\n" + "\n.join(elements_data) + f"\n\nCompounds:\n{compounds_data}"
+        return f"Elements:\n" + "\n".join(elements_data) + f"\n\nCompounds:\n{compounds_data}"
 
     def on_closing(self):
         self.running = False
