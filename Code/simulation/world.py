@@ -1,57 +1,30 @@
-import json
-from collections import defaultdict
-from .physics import Physics
-from .chemistry import Chemistry
-from .key_compounds import get_key_compounds
-from .element import Element
-from .element_ratios import get_element_ratios
-from .periodic_table import get_periodic_table
 import random
+from simulation.element import Element
 
 class World:
     def __init__(self):
         self.elements = []
-        self.compounds = defaultdict(int)
+        self.compounds = {}
         self.load_key_compounds()
         self.initialize_elements()
-        self.physics = Physics()
-        self.chemistry = Chemistry(self.compounds)
 
-    def add_element(self, element):
-        self.elements.append(element)
+    def time_step(self, step=0.1):
+        for element in self.elements:
+            element.position_x += random.uniform(-1, 1) * step
+            element.position_y += random.uniform(-1, 1) * step
+        self.apply_physics()
 
-    def time_step(self, step):
-        self.chemistry.time_step_counter = step
-        self.physics.apply_gravity(self.elements)
-        self.physics.detect_collisions(self.elements, self.chemistry)
-        self.chemistry.advanced_interactions(self.elements)
-        self.chemistry.log_state()
+    def apply_physics(self):
+        pass
 
-    def save_state(self):
-        state = {
-            "elements": [(e.name, e.symbol, e.atomic_number, e.reactivity, e.stability, e.mass, e.volume, e.charge, e.temperature, e.melting_point, e.boiling_point) for e in self.elements],
-            "compounds": dict(self.compounds)
-        }
-        with open("simulation_state.json", "w") as file:
-            json.dump(state, file)
-        with open("world_state.json", "w") as file:
-            json.dump(state, file)
-        print("State saved successfully.")
-
-    def load_state(self):
-        try:
-            with open("simulation_state.json", "r") as file:
-                state = json.load(file)
-            self.elements = [Element(*e) for e in state["elements"]]
-            self.compounds = defaultdict(int, state["compounds"])
-            print("Previous state loaded successfully.")
-        except FileNotFoundError:
-            print("No previous state found. Initializing with new elements.")
+    def reset(self):
+        self.elements = []
+        self.compounds = {}
+        self.initialize_elements()
 
     def load_key_compounds(self):
         key_compounds = get_key_compounds()
-        for name, elements in key_compounds.items():
-            self.compounds[name] += 1
+        self.compounds = key_compounds
 
     def initialize_elements(self):
         element_ratios = get_element_ratios()
@@ -60,21 +33,12 @@ class World:
             for _ in range(count):
                 element = next((e for e in periodic_table if e.symbol == symbol), None)
                 if element:
-                    new_element = Element(
-                        name=element.name,
-                        symbol=element.symbol,
-                        atomic_number=element.atomic_number,
-                        reactivity=element.reactivity,
-                        stability=element.stability,
-                        mass=element.mass,
-                        volume=element.volume,
-                        charge=element.charge,
-                        temperature=element.temperature,
-                        melting_point=element.melting_point,
-                        boiling_point=element.boiling_point,
-                        position_x=random.uniform(-100, 100),  # Random initial position
-                        position_y=random.uniform(-100, 100)   # Random initial position
-                    )
+                    new_element = Element(symbol=element.symbol, name=element.name)
+                    new_element.position_x = random.uniform(-100, 100)
+                    new_element.position_y = random.uniform(-100, 100)
                     self.add_element(new_element)
                 else:
                     print(f"Element {symbol} not found in periodic table.")
+
+    def add_element(self, element):
+        self.elements.append(element)
