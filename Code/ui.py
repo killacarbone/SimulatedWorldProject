@@ -1,4 +1,3 @@
-# ui.py
 import tkinter as tk
 from simulation.world import World
 
@@ -29,18 +28,20 @@ class SimulationApp:
         self.status_label.grid(row=4, column=0, padx=10, pady=5)
 
         self.filter_var = tk.StringVar()
-        self.filter_entry = tk.Entry(self.master, textvariable=self.filter_var)
-        self.filter_entry.grid(row=0, column=1, padx=10, pady=5)
+        self.filter_dropdown = tk.OptionMenu(self.master, self.filter_var, '')
+        self.filter_dropdown.grid(row=0, column=1, padx=10, pady=5, sticky='ew')
 
         self.data_text = tk.Text(self.master, wrap="word", height=20, width=50)
-        self.data_text.grid(row=1, column=1, rowspan=4, padx=10, pady=5)
+        self.data_text.grid(row=1, column=1, rowspan=4, padx=10, pady=5, sticky='nsew')
 
         self.master.grid_rowconfigure(0, weight=1)
         self.master.grid_columnconfigure(1, weight=1)
 
     def update_filter_options(self):
         element_symbols = sorted(set(e.symbol for e in self.world.elements))
-        self.filter_entry['values'] = element_symbols
+        self.filter_dropdown['menu'].delete(0, 'end')
+        for symbol in element_symbols:
+            self.filter_dropdown['menu'].add_command(label=symbol, command=tk._setit(self.filter_var, symbol))
 
     def update_data_display(self, event=None):
         self.data_text.delete(1.0, tk.END)
@@ -50,7 +51,7 @@ class SimulationApp:
     def get_simulation_data(self):
         filter_symbol = self.filter_var.get()
         elements_data = [
-            f"{e.name} ({e.symbol}): State ({e.state}), Temperature ({e.temperature})"
+            f"{e.name} ({e.symbol}): Position ({e.position_x}, {e.position_y}), State ({e.state}), Temperature ({e.temperature})"
             for e in self.world.elements if not filter_symbol or e.symbol == filter_symbol
         ]
         compounds_data = "\n".join([f"{compound}: {count}" for compound, count in self.world.compounds.items()])
