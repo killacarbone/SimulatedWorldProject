@@ -1,6 +1,6 @@
 import json
 import random
-from element import Element
+from simulation.element import Element
 
 class World:
     def __init__(self):
