@@ -1,7 +1,5 @@
-# world.py
 import random
 import json
-import logging
 from collections import defaultdict
 from .element import Element
 from .element_ratios import get_element_ratios
@@ -24,10 +22,7 @@ class World:
 
     def time_step(self, step):
         self.chemistry.time_step_counter = step
-        self.physics.apply_gravity(self.elements)
-        self.physics.detect_collisions(self.elements, self.chemistry)
-        self.physics.apply_electromagnetic_forces(self.elements)
-        self.physics.apply_thermal_dynamics(self.elements)
+        self.physics.apply_forces(self.elements, self.chemistry)
         self.chemistry.log_state()
 
     def save_state(self):
@@ -63,14 +58,13 @@ class World:
             for _ in range(count):
                 element = next((e for e in periodic_table if e.symbol == symbol), None)
                 if element:
-                    # Create a copy of the element to ensure each has a unique position
                     new_element = Element(
                         element.name, element.symbol, element.atomic_number, element.reactivity,
                         element.stability, element.mass, element.volume, element.charge,
-                        element.temperature, element.melting_point, element.boiling_point, 
-                        element.state, 
-                        random.uniform(-100, 100),  # Random initial position
-                        random.uniform(-100, 100)   # Random initial position
+                        element.temperature, element.melting_point, element.boiling_point,
+                        element.state,
+                        random.uniform(-100, 100),
+                        random.uniform(-100, 100)
                     )
                     self.add_element(new_element)
                 else:

@@ -1,5 +1,4 @@
 import math
-import logging
 
 def apply_electromagnetic_forces(elements):
     k = 8.99e9  # Coulomb's constant in N m²/C²
@@ -8,4 +7,3 @@ def apply_electromagnetic_forces(elements):
             r = math.sqrt((element2.position_x - element1.position_x)**2 + (element2.position_y - element1.position_y)**2)
             if r > 0:
                 force = k * (element1.charge * element2.charge) / r**2
-                logging.info(f"Electromagnetic force between {element1.symbol} and {element2.symbol}: {force} N")

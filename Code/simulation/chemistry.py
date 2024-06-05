@@ -4,7 +4,6 @@ import logging
 class Chemistry:
     def __init__(self, compounds):
         self.compounds = compounds
-        self.time_step_counter = 0
 
     def form_compound(self, element1, element2):
         compound_name = f"{element1.symbol}{element2.symbol}"
@@ -20,10 +19,9 @@ class Chemistry:
             else:
                 element.state = 'solid'
 
-            # Example interaction condition
             if element.state == 'gas' and random.random() > 0.7:
                 element.temperature += 1
                 logging.info(f"Element {element.symbol} temperature increased due to interaction")
 
     def log_state(self):
-        logging.info(f"Compounds at time step {self.time_step_counter}: {dict(self.compounds)}")
+        logging.info(f"Compounds at time step: {self.compounds}")

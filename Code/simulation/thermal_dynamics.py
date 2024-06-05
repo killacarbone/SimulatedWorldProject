@@ -1,11 +1,9 @@
-import logging
+import math
 
-class ThermalDynamics:
-    @staticmethod
-    def apply(elements):
-        for element in elements:
-            if element.temperature > element.melting_point:
-                element.state = 'liquid'
-            elif element.temperature > element.boiling_point:
-                element.state = 'gas'
-            logging.info(f"Thermal dynamics applied to element {element.symbol}: state {element.state}, temperature {element.temperature}")
+def apply_electromagnetic_forces(elements):
+    k = 8.99e9  # Coulomb's constant in N m²/C²
+    for i, element1 in enumerate(elements):
+        for element2 in elements[i+1:]:
+            r = math.sqrt((element2.position_x - element1.position_x)**2 + (element2.position_y - element1.position_y)**2)
+            if r > 0:
+                force = k * (element1.charge * element2.charge) / r**2
