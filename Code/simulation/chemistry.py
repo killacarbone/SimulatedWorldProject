@@ -1,5 +1,5 @@
+import random
 import logging
-from collections import defaultdict
 
 class Chemistry:
     def __init__(self, compounds):
@@ -9,9 +9,21 @@ class Chemistry:
     def form_compound(self, element1, element2):
         compound_name = f"{element1.symbol}{element2.symbol}"
         self.compounds[compound_name] += 1
-        if self.time_step_counter % 10 == 0:  # Adjust logging frequency
-            logging.info(f"Step {self.time_step_counter}: Compound formed: {compound_name}")
+        logging.info(f"Compound formed: {compound_name}")
+
+    def advanced_interactions(self, elements):
+        for element in elements:
+            if element.temperature > element.melting_point:
+                element.state = 'liquid'
+            elif element.temperature > element.boiling_point:
+                element.state = 'gas'
+            else:
+                element.state = 'solid'
+
+            # Example interaction condition
+            if element.state == 'gas' and random.random() > 0.7:
+                element.temperature += 1
+                logging.info(f"Element {element.symbol} temperature increased due to interaction")
 
     def log_state(self):
-        if self.time_step_counter % 10 == 0:  # Adjust logging frequency
-            logging.info(f"Step {self.time_step_counter} completed.")
+        logging.info(f"Compounds at time step {self.time_step_counter}: {dict(self.compounds)}")

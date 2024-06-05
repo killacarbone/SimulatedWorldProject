@@ -9,10 +9,8 @@ class SimulationApp:
         self.master = master
         self.master.title("Simulated World Project")
 
-        # Simulation world instance
         self.world = World()
 
-        # UI elements
         self.start_button = tk.Button(master, text="Start", command=self.start_simulation)
         self.start_button.grid(row=0, column=0, padx=5, pady=5)
 
@@ -40,7 +38,7 @@ class SimulationApp:
         self.data_text.grid(row=1, column=1, columnspan=2, rowspan=4, sticky='nsew')
 
         self.master.grid_columnconfigure(1, weight=1)
-        self.master.grid_rowconfigure(1, weight=1)
+        self.master.grid_rowconfigure(5, weight=1)
 
         self.running = False
 
@@ -67,7 +65,7 @@ class SimulationApp:
 
     def reset_simulation(self):
         self.running = False
-        self.world = World()  # Reset the world
+        self.world = World()
         self.update_data_display()
         self.status_label.config(text="Status: Reset")
 
@@ -79,8 +77,8 @@ class SimulationApp:
             self.world.time_step(step)
             self.update_data_display()
             step += 1
-            time.sleep(1)  # Adjust the speed of simulation as needed
-        self.master.after(0, lambda: self.status_label.config(text="Status: Stopped"))  # Ensure update runs in main thread
+            time.sleep(1)
+        self.status_label.config(text="Status: Stopped")
 
     def update_data_display(self, event=None):
         self.data_text.delete(1.0, tk.END)
