@@ -6,15 +6,15 @@ class World:
         self.elements = self.load_periodic_table()
         self.element_ratios = self.load_element_ratios()
         self.key_compounds = self.load_key_compounds()
-        self.initialize_elements()
         self.compounds = {}  # Initialize compounds
+        self.initialize_elements()
 
     def initialize_elements(self):
         for symbol, count in self.element_ratios.items():
             for _ in range(int(count)):  # Fixed issue with float
                 element = next((e for e in self.elements if e.symbol == symbol), None)
                 if element:
-                    self.elements.append(Element(**element))
+                    self.elements.append(element)
 
     def load_periodic_table(self):
         with open('Data/periodic_table.json', 'r') as file:
