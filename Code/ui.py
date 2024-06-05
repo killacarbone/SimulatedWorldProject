@@ -40,7 +40,7 @@ class SimulationApp:
         self.data_text.grid(row=1, column=1, columnspan=2, rowspan=4, sticky='nsew')
 
         self.master.grid_columnconfigure(1, weight=1)
-        self.master.grid_rowconfigure(5, weight=1)
+        self.master.grid_rowconfigure(1, weight=1)
 
         self.running = False
 
@@ -80,7 +80,7 @@ class SimulationApp:
             self.update_data_display()
             step += 1
             time.sleep(1)  # Adjust the speed of simulation as needed
-        self.status_label.config(text="Status: Stopped")
+        self.master.after(0, lambda: self.status_label.config(text="Status: Stopped"))  # Ensure update runs in main thread
 
     def update_data_display(self, event=None):
         self.data_text.delete(1.0, tk.END)
