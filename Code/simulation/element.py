@@ -17,13 +17,11 @@ class Element:
         self.position_x = position_x
         self.position_y = position_y
 
-# Load periodic table from JSON
 def load_periodic_table():
     with open('Data/periodic_table.json', 'r') as file:
         periodic_table_data = json.load(file)
     return [Element(**element) for element in periodic_table_data['elements']]
 
-# Load element ratios from JSON
 def load_element_ratios():
     with open('Data/element_ratios.json', 'r') as file:
         return json.load(file)['ratios']

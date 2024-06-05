@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
 from simulation.world import World
 
 class SimulationApp:
@@ -29,7 +28,7 @@ class SimulationApp:
         self.status_label.grid(row=4, column=0, padx=10, pady=5)
 
         self.filter_var = tk.StringVar()
-        self.filter_entry = ttk.Combobox(self.master, textvariable=self.filter_var)
+        self.filter_entry = tk.Entry(self.master, textvariable=self.filter_var)
         self.filter_entry.grid(row=0, column=1, padx=10, pady=5)
 
         self.data_text = tk.Text(self.master, wrap="word", height=20, width=50)
@@ -42,7 +41,7 @@ class SimulationApp:
         element_symbols = sorted(set(e.symbol for e in self.world.elements))
         self.filter_entry['values'] = element_symbols
 
-    def update_data_display(self, event=None):
+    def update_data_display(self):
         self.data_text.delete(1.0, tk.END)
         data = self.get_simulation_data()
         self.data_text.insert(tk.END, data)

@@ -1,15 +1,16 @@
 import json
-from simulation.element import Element
 
-def load_periodic_table():
-    with open('Data/periodic_table.json', 'r') as file:
+def load_periodic_table(file_path):
+    with open(file_path, 'r') as file:
         periodic_table_data = json.load(file)
-    return [Element(**element) for element in periodic_table_data['elements']]
+    return periodic_table_data
 
-def load_element_ratios():
-    with open('Data/element_ratios.json', 'r') as file:
-        return json.load(file)['ratios']
+def load_element_ratios(file_path):
+    with open(file_path, 'r') as file:
+        element_ratios = json.load(file)['ratios']
+    return element_ratios
 
-def load_key_compounds():
-    with open('Data/key_compounds.json', 'r') as file:
-        return json.load(file)['compounds']
+def load_key_compounds(file_path):
+    with open(file_path, 'r') as file:
+        key_compounds = json.load(file)
+    return key_compounds
