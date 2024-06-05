@@ -1,7 +1,7 @@
 import json
 
 class Element:
-    def __init__(self, name, symbol, atomic_number, reactivity, stability, mass, volume, charge=0, temperature=0, melting_point=0, boiling_point=0, state='solid'):
+    def __init__(self, name, symbol, atomic_number, reactivity, stability, mass, volume, charge=0, temperature=0, melting_point=0, boiling_point=0, state='solid', position_x=0, position_y=0):
         self.name = name
         self.symbol = symbol
         self.atomic_number = atomic_number
@@ -14,6 +14,8 @@ class Element:
         self.melting_point = melting_point
         self.boiling_point = boiling_point
         self.state = state
+        self.position_x = position_x
+        self.position_y = position_y
 
 # Load periodic table from JSON
 def load_periodic_table():

@@ -1,5 +1,6 @@
-from simulation.element import Element
 import json
+import random
+from element import Element
 
 class World:
     def __init__(self):
@@ -17,15 +18,22 @@ class World:
         with open('Data/element_ratios.json', 'r') as file:
             return json.load(file)['ratios']
 
-    def load_key_compounds(self):
-        with open('Data/key_compounds.json', 'r') as file:
-            self.key_compounds = json.load(file)
-
     def initialize_elements(self):
         for symbol, count in self.element_ratios.items():
             for _ in range(int(count)):
                 element = next(e for e in self.elements if e.symbol == symbol)
+                element.position_x = random.uniform(-100, 100)
+                element.position_y = random.uniform(-100, 100)
                 self.elements.append(element)
 
+    def load_key_compounds(self):
+        with open('Data/key_compounds.json', 'r') as file:
+            self.key_compounds = json.load(file)
+
+    def reset(self):
+        self.elements = self.load_periodic_table()
+        self.compounds = {}
+        self.initialize_elements()
+
     def time_step(self, step=1.0):
-        pass
+        pass  # Simulate time step

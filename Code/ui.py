@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
 from simulation.world import World
 
 class SimulationApp:
@@ -29,7 +28,7 @@ class SimulationApp:
         self.status_label.grid(row=4, column=0, padx=10, pady=5)
 
         self.filter_var = tk.StringVar()
-        self.filter_entry = ttk.Combobox(self.master, textvariable=self.filter_var)
+        self.filter_entry = tk.Entry(self.master, textvariable=self.filter_var)
         self.filter_entry.grid(row=0, column=1, padx=10, pady=5)
 
         self.data_text = tk.Text(self.master, wrap="word", height=20, width=50)
@@ -54,7 +53,7 @@ class SimulationApp:
             for e in self.world.elements if not filter_symbol or e.symbol == filter_symbol
         ]
         compounds_data = "\n".join([f"{compound}: {count}" for compound, count in self.world.compounds.items()])
-        return f"Elements:\n" + "\n" + "\n".join(elements_data) + f"\n\nCompounds:\n{compounds_data}"
+        return f"Elements:\n" + "\n".join(elements_data) + f"\n\nCompounds:\n{compounds_data}"
 
     def start_simulation(self):
         if not self.running:
