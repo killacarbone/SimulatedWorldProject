@@ -1,0 +1,68 @@
+{
+    "key_compounds": {
+        "Water": {
+            "formula": "H2O",
+            "elements": ["H", "H", "O"]
+        },
+        "Carbon Dioxide": {
+            "formula": "CO2",
+            "elements": ["C", "O", "O"]
+        },
+        "Oxygen Gas": {
+            "formula": "O2",
+            "elements": ["O", "O"]
+        },
+        "Nitrogen Gas": {
+            "formula": "N2",
+            "elements": ["N", "N"]
+        },
+        "Methane": {
+            "formula": "CH4",
+            "elements": ["C", "H", "H", "H", "H"]
+        },
+        "Ammonia": {
+            "formula": "NH3",
+            "elements": ["N", "H", "H", "H"]
+        },
+        "Sulfuric Acid": {
+            "formula": "H2SO4",
+            "elements": ["H", "H", "S", "O", "O", "O", "O"]
+        },
+        "Glucose": {
+            "formula": "C6H12O6",
+            "elements": ["C", "C", "C", "C", "C", "C", "H", "H", "H", "H", "H", "H", "H", "H", "O", "O", "O", "O", "O", "O"]
+        },
+        "Sodium Chloride": {
+            "formula": "NaCl",
+            "elements": ["Na", "Cl"]
+        },
+        "Hydrochloric Acid": {
+            "formula": "HCl",
+            "elements": ["H", "Cl"]
+        },
+        "Hydrogen Gas": {
+            "formula": "H2",
+            "elements": ["H", "H"]
+        },
+        "Nitrogen Dioxide": {
+            "formula": "NO2",
+            "elements": ["N", "O", "O"]
+        },
+        "Sulfur Dioxide": {
+            "formula": "SO2",
+            "elements": ["S", "O", "O"]
+        },
+        "Ethane": {
+            "formula": "C2H6",
+            "elements": ["C", "C", "H", "H", "H", "H", "H", "H"]
+        },
+        "Ethylene": {
+            "formula": "C2H4",
+            "elements": ["C", "C", "H", "H", "H", "H"]
+        },
+        "Acetylene": {
+            "formula": "C2H2",
+            "elements": ["C", "C", "H", "H"]
+        }
+    }
+}
