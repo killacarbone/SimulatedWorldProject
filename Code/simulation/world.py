@@ -61,7 +61,6 @@ class World:
             for _ in range(count):
                 element = next((e for e in periodic_table if e.symbol == symbol), None)
                 if element:
-                    # Create a copy of the element to ensure each has a unique position
                     new_element = Element(
                         element.name, element.symbol, element.atomic_number, element.reactivity,
                         element.stability, element.mass, element.volume, element.charge,

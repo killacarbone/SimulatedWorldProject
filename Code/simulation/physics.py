@@ -1,11 +1,17 @@
-from simulation.gravity import Gravity
-from simulation.collision import Collision
-from simulation.thermal_dynamics import ThermalDynamics
-from simulation.electromagnetic_forces import ElectromagneticForces
+from .gravity import apply_gravity
+from .collision import detect_collisions
+from .electromagnetic_forces import apply_electromagnetic_forces
+from .thermal_dynamics import apply_thermal_dynamics
 
 class Physics:
-    def apply_physics(self, elements, chemistry):
-        Gravity.apply(elements)
-        Collision.detect_and_resolve(elements, chemistry)
-        ThermalDynamics.apply(elements)
-        ElectromagneticForces.apply(elements)
+    def apply_gravity(self, elements):
+        apply_gravity(elements)
+
+    def detect_collisions(self, elements, chemistry):
+        detect_collisions(elements, chemistry)
+
+    def apply_electromagnetic_forces(self, elements):
+        apply_electromagnetic_forces(elements)
+
+    def apply_thermal_dynamics(self, elements):
+        apply_thermal_dynamics(elements)
