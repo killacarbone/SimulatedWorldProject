@@ -1,3 +1,4 @@
+# world.py
 import random
 import json
 import logging
@@ -27,7 +28,6 @@ class World:
         self.physics.detect_collisions(self.elements, self.chemistry)
         self.physics.apply_electromagnetic_forces(self.elements)
         self.physics.apply_thermal_dynamics(self.elements)
-        self.chemistry.advanced_interactions(self.elements)
         self.chemistry.log_state()
 
     def save_state(self):
