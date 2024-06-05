@@ -1,32 +1,28 @@
-import json
-from .element import periodic_table, element_ratios
+# world.py
+from simulation.element import load_periodic_table, load_element_ratios
 
 class World:
     def __init__(self):
-        self.elements = periodic_table
+        self.elements = load_periodic_table()
+        self.element_ratios = load_element_ratios()
         self.compounds = {}
-        self.load_key_compounds()
         self.initialize_elements()
+
+    def initialize_elements(self):
+        for symbol, count in self.element_ratios.items():
+            for _ in range(count):
+                element = next(e for e in self.elements if e.symbol == symbol)
+                self.elements.append(element)
 
     def load_key_compounds(self):
         with open('Data/key_compounds.json', 'r') as file:
-            self.key_compounds = json.load(file)['key_compounds']
+            self.key_compounds = json.load(file)
 
-    def initialize_elements(self):
-        for symbol, count in element_ratios.items():
-            for element in self.elements:
-                if element.symbol == symbol:
-                    element.count = count
-                    break
-
-    def time_step(self, step=0.1):
-        # Simulate time step for elements and compounds
+    def time_step(self, step=1.0):
+        # Simulate time step
         pass
 
     def reset(self):
+        self.elements = load_periodic_table()
         self.compounds = {}
-        self.initialize_elements()
 
-# Example usage
-world = World()
-world.time_step()
