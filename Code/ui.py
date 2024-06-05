@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
+import threading
+import time
 from simulation.world import World
 
 class SimulationApp:
@@ -8,56 +10,62 @@ class SimulationApp:
         self.master.title("Simulated World Project")
 
         self.world = World()
-
-        self.start_button = tk.Button(self.master, text="Start", command=self.start_simulation)
-        self.start_button.grid(row=0, column=0, padx=5, pady=5)
-
-        self.pause_button = tk.Button(self.master, text="Pause", command=self.pause_simulation)
-        self.pause_button.grid(row=1, column=0, padx=5, pady=5)
-
-        self.resume_button = tk.Button(self.master, text="Resume", command=self.resume_simulation)
-        self.resume_button.grid(row=2, column=0, padx=5, pady=5)
-
-        self.reset_button = tk.Button(self.master, text="Reset", command=self.reset_simulation)
-        self.reset_button.grid(row=3, column=0, padx=5, pady=5)
-
-        self.status_label = tk.Label(self.master, text="Status: Ready")
-        self.status_label.grid(row=4, column=0, padx=5, pady=5)
-
-        self.filter_var = tk.StringVar()
-        self.filter_combobox = ttk.Combobox(self.master, textvariable=self.filter_var)
-        self.filter_combobox['values'] = [e.symbol for e in self.world.elements]
-        self.filter_combobox.grid(row=0, column=1, padx=5, pady=5)
-
-        self.data_text = tk.Text(self.master, height=20, width=80)
-        self.data_text.grid(row=1, column=1, rowspan=4, padx=5, pady=5, sticky="nsew")
-
-        self.master.grid_columnconfigure(1, weight=1)
-        self.master.grid_rowconfigure(4, weight=1)
-
         self.running = False
+        self.filter_var = tk.StringVar()
+
+        self.create_widgets()
+
+    def create_widgets(self):
+        self.start_button = ttk.Button(self.master, text="Start", command=self.start_simulation)
+        self.start_button.grid(row=0, column=0, padx=10, pady=10)
+
+        self.pause_button = ttk.Button(self.master, text="Pause", command=self.pause_simulation)
+        self.pause_button.grid(row=1, column=0, padx=10, pady=10)
+
+        self.resume_button = ttk.Button(self.master, text="Resume", command=self.resume_simulation)
+        self.resume_button.grid(row=2, column=0, padx=10, pady=10)
+
+        self.reset_button = ttk.Button(self.master, text="Reset", command=self.reset_simulation)
+        self.reset_button.grid(row=3, column=0, padx=10, pady=10)
+
+        self.filter_entry = ttk.Entry(self.master, textvariable=self.filter_var)
+        self.filter_entry.grid(row=0, column=1, padx=10, pady=10)
+
+        self.data_text = tk.Text(self.master, wrap=tk.WORD, height=20, width=80)
+        self.data_text.grid(row=1, column=1, rowspan=10, padx=10, pady=10)
+
+        self.status_label = ttk.Label(self.master, text="Status: Ready")
+        self.status_label.grid(row=11, column=0, columnspan=2, padx=10, pady=10)
 
     def start_simulation(self):
-        if not self.running:
-            self.running = True
-            self.status_label.config(text="Status: Running")
-            self.run_simulation()
+        self.running = True
+        self.status_label.config(text="Status: Running")
+        self.simulation_thread = threading.Thread(target=self.run_simulation)
+        self.simulation_thread.start()
 
     def pause_simulation(self):
         self.running = False
         self.status_label.config(text="Status: Paused")
 
     def resume_simulation(self):
-        if not self.running:
-            self.running = True
-            self.status_label.config(text="Status: Running")
-            self.run_simulation()
+        self.running = True
+        self.status_label.config(text="Status: Running")
+        self.simulation_thread = threading.Thread(target=self.run_simulation)
+        self.simulation_thread.start()
 
     def reset_simulation(self):
         self.running = False
-        self.status_label.config(text="Status: Reset")
         self.world = World()
         self.update_data_display()
+        self.status_label.config(text="Status: Reset")
+
+    def run_simulation(self):
+        step = 0
+        while self.running:
+            self.world.time_step(step)
+            self.update_data_display()
+            step += 1
+            time.sleep(1)
 
     def update_data_display(self, event=None):
         self.data_text.delete(1.0, tk.END)
@@ -71,13 +79,7 @@ class SimulationApp:
             for e in self.world.elements if not filter_symbol or e.symbol == filter_symbol
         ]
         compounds_data = "\n".join([f"{compound}: {count}" for compound, count in self.world.compounds.items()])
-        return "Elements:\n" + "\n".join(elements_data) + f"\n\nCompounds:\n{compounds_data}"
-
-    def run_simulation(self):
-        if self.running:
-            self.world.time_step()
-            self.update_data_display()
-            self.master.after(1000, self.run_simulation)
+        return f"Elements:\n" + "\n".join(elements_data) + f"\n\nCompounds:\n{compounds_data}"
 
     def on_closing(self):
         self.running = False
