@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
 from simulation.world import World
 
 class SimulationApp:
@@ -11,6 +10,7 @@ class SimulationApp:
         self.create_widgets()
         self.world = World()
         self.update_filter_options()
+        self.update_data_display()
 
     def create_widgets(self):
         self.start_button = tk.Button(self.master, text="Start", command=self.start_simulation)
@@ -29,18 +29,21 @@ class SimulationApp:
         self.status_label.grid(row=4, column=0, padx=10, pady=5)
 
         self.filter_var = tk.StringVar()
-        self.filter_entry = ttk.Combobox(self.master, textvariable=self.filter_var)
+        self.filter_entry = tk.OptionMenu(self.master, self.filter_var, "")
         self.filter_entry.grid(row=0, column=1, padx=10, pady=5)
 
         self.data_text = tk.Text(self.master, wrap="word", height=20, width=50)
-        self.data_text.grid(row=1, column=1, rowspan=4, padx=10, pady=5)
+        self.data_text.grid(row=1, column=1, rowspan=4, padx=10, pady=5, sticky="nsew")
 
-        self.master.grid_rowconfigure(0, weight=1)
+        self.master.grid_rowconfigure(1, weight=1)
         self.master.grid_columnconfigure(1, weight=1)
 
     def update_filter_options(self):
         element_symbols = sorted(set(e.symbol for e in self.world.elements))
-        self.filter_entry['values'] = element_symbols
+        menu = self.filter_entry["menu"]
+        menu.delete(0, "end")
+        for symbol in element_symbols:
+            menu.add_command(label=symbol, command=lambda value=symbol: self.filter_var.set(value))
 
     def update_data_display(self):
         self.data_text.delete(1.0, tk.END)
