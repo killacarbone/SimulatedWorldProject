@@ -71,7 +71,7 @@ class SimulationApp:
         self.run_simulation()
 
     def run_simulation(self):
-        self.world.time_step()
+        self.world.time_step(step=1)  # Pass a default step value
         self.update_data_display()
         self.master.after(1000, self.run_simulation)
 
